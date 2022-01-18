@@ -1,0 +1,24 @@
+.headerMain {
+  height: var(--header-height);
+  background-color: var(--white-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+}
+.headerMain__title {
+  font-size: 2rem;
+  line-height: 3rem;
+  color: var(--text-color);
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+.headerMain_user-wrap {
+  cursor: pointer;
+}
+.headerMain_user-icon {
+  font-size: 1.5rem;
+  line-height: 2.1rem;
+  color: var(--text-color);
+  margin-right: 4px;
+}

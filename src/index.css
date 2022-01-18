@@ -1,0 +1,22 @@
+:root {
+  --primary-color: #242526;
+  --primary-color-red: #ee4266;
+  --white-color: #fff;
+  --white-color-header: #e4e6eb;
+  --background-primary: #f9f6f0;
+  --background-primary-2: #fffdfa;
+  --black-color: #000;
+  --text-color: #333;
+  --border-color: #dbdbdb;
+  --star-gold-color: #ffce3e;
+  --btn-color: #956151;
+
+  --header-height: 60px;
+}
+@import-normalize;
+* {
+  box-sizing: border-box;
+  line-height: 1.6rem;
+  font-family: "Roboto", sans-serif;
+  font-size: 10px;
+}

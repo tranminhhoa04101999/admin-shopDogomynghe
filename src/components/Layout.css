@@ -1,0 +1,27 @@
+.wrraper {
+  display: flex;
+}
+.main-nav {
+  background-color: var(--white-color);
+  width: 150px;
+  height: calc(100vh - var(--header-height));
+  float: left;
+  text-align: center;
+  padding: 50px 0;
+  border-top: 2px solid var(--border-color);
+}
+.main-nav-item {
+  margin-bottom: 20px;
+}
+.main {
+  background-color: var(--background-primary);
+  height: calc(100vh - var(--header-height));
+}
+.main-nav div {
+  font-size: 1.5rem;
+  line-height: 2.1rem;
+  letter-spacing: 0.4px;
+}
+.main-nav__icon {
+  margin-right: 4px;
+}
