@@ -1,5 +1,5 @@
 const Dashboard = (props) => {
-  return <div>day la dashboard</div>;
+  return <div className="grid wide">day la dashboard</div>;
 };
 
 export default Dashboard;

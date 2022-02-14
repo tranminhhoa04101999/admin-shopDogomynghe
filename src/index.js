@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import "./assets/css/grid.css";
+import "antd/dist/antd.css";
 
 ReactDOM.render(
   <BrowserRouter>

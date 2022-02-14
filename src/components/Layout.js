@@ -8,22 +8,50 @@ import { NavLink } from "react-router-dom";
 
 const Layout = (props) => {
   return (
-    <Fragment>
+    <div>
       <HeaderMain />
       <div className="wrapper">
         <div className="main-nav">
-          <NavLink to="/dashboard" className="main-nav-item">
+          <NavLink
+            to="/dashboard"
+            className={({ isActive }) =>
+              isActive ? "main-nav-item main-nav-item--active" : "main-nav-item"
+            }
+          >
             <FontAwesomeIcon icon={faChartLine} className="main-nav__icon" />
             Dashboard
           </NavLink>
-          <NavLink to="/products" className="main-nav-item">
+          <NavLink
+            to="/users"
+            className={({ isActive }) =>
+              isActive ? "main-nav-item main-nav-item--active" : "main-nav-item"
+            }
+          >
+            <FontAwesomeIcon icon={faChartLine} className="main-nav__icon" />
+            Users
+          </NavLink>
+          <NavLink
+            to="/products"
+            className={({ isActive }) =>
+              isActive ? "main-nav-item main-nav-item--active" : "main-nav-item"
+            }
+          >
             <FontAwesomeIcon icon={faProductHunt} className="main-nav__icon" />
             Products
+          </NavLink>
+          <NavLink
+            to="/orders"
+            className={({ isActive }) =>
+              isActive ? "main-nav-item main-nav-item--active" : "main-nav-item"
+            }
+          >
+            <FontAwesomeIcon icon={faProductHunt} className="main-nav__icon" />
+            Orders
           </NavLink>
         </div>
         <div className="main">{props.children}</div>
       </div>
-    </Fragment>
+    </div>
   );
 };
 
