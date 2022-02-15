@@ -1,0 +1,18 @@
+.wrap-inputcustom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.inputcustom__input {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-bottom: 2px solid #afafaf;
+  background: transparent;
+  margin-bottom: 22px;
+  max-width: 538px;
+  outline: none;
+  font-size: 1.5rem;
+  line-height: 2.1rem;
+  box-shadow: none;
+}

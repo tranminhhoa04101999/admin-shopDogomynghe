@@ -1,0 +1,20 @@
+.wrap-addprod {
+}
+.wrap-addprod__item {
+}
+
+.addprod-item__Switch {
+  display: flex;
+  justify-content: center;
+  margin-right: 50px;
+}
+.addprod-item__action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.addprod-item__Switch span {
+  font-size: 1.6rem;
+  line-height: 1.8rem;
+  margin-right: 4px;
+}

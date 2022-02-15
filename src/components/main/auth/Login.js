@@ -13,6 +13,15 @@ const Login = () => {
   const [dataAccount, setDataAccount] = useState([]);
   const navigate = useNavigate();
 
+  // ngăn không cho quay lại login khi đăng nhập rồi
+  const data = JSON.parse(localStorage.getItem("infoAccountLogined"));
+  useEffect(() => {
+    if (data === null || data === undefined) {
+    } else {
+      navigate("/dashboard");
+    }
+  }, []);
+  //--//
   const openNotification = () => {
     notification.open({
       message: "Đăng nhập lỗi",
@@ -36,7 +45,7 @@ const Login = () => {
       dem++;
     } else {
       localStorage.setItem("infoAccountLogined", JSON.stringify(dataAccount[0]));
-      navigate("/dashboard");
+      window.location.replace("/");
       //let da = JSON.parse(localStorage.getItem("infoAccountLogined"));
     }
   }, [dataAccount, setDataAccount]);
