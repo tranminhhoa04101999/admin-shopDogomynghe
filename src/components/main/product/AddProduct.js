@@ -1,24 +1,38 @@
 import React from 'react';
-import InputCustom from '../base/InputCustom';
+import InputCustom from '../../base/InputCustom';
 import './AddProduct.css';
 import { useState } from 'react';
-
 import { Switch } from 'antd';
-import ButtonCustom from '../base/ButtonCustom';
-import { LINKCONECT_BASE } from '../../App';
-
-const styleButton = {};
+import ButtonCustom from '../../base/ButtonCustom';
+import { LINKCONECT_BASE } from '../../../App';
+import { notification } from 'antd';
+import { useEffect } from 'react';
 
 const AddProduct = () => {
+  const [reset, setReset] = useState('');
+  const date = new Date();
+  const dateNow =
+    date.getFullYear().toString() +
+    '-' +
+    date.getMonth().toString() +
+    '-' +
+    date.getDay().toString();
   const [dataProd, setDataProd] = useState({
     nameProduct: '',
     price: 0,
     color: '',
     descProduct: '',
     quantity: 0,
-    addDate: '2022-02-15',
+    addDate: dateNow,
     isActive: 1,
   });
+
+  const openNotificationWithIcon = (props) => {
+    notification[props.type]({
+      message: props.message,
+      description: props.desc,
+    });
+  };
 
   const nameProdOnchange = (event) => {
     setDataProd((prevData) => ({ ...prevData, nameProduct: event.target.value }));
@@ -36,7 +50,6 @@ const AddProduct = () => {
     setDataProd((prevData) => ({ ...prevData, quantity: event.target.value }));
   };
   const switchHandler = (checked) => {
-    console.log('sdsa', checked);
     if (checked) {
       setDataProd((prevData) => ({ ...prevData, isActive: 1 }));
     } else {
@@ -45,9 +58,6 @@ const AddProduct = () => {
   };
 
   const btnSubmitHandler = () => {
-    console.log(dataProd);
-    console.log(JSON.stringify(dataProd));
-    console.log(LINKCONECT_BASE + '/addproduct');
     fetch(LINKCONECT_BASE + '/addproduct', {
       method: 'POST',
       mode: 'cors',
@@ -63,26 +73,70 @@ const AddProduct = () => {
       referrerPolicy: 'no-referrer',
       body: JSON.stringify(dataProd),
     })
-      .then((response) => response.json())
+      .then((response) => response)
       .then((data) => {
-        console.log('Success:' + data);
+        openNotificationWithIcon({
+          type: 'success',
+          message: 'Thêm mới thành công',
+          desc: dataProd.nameProduct,
+        });
+        // thêm thành công reset input
+        setReset('RESET');
       })
       .catch((error) => {
-        console.error('Error:' + error);
+        openNotificationWithIcon({
+          type: 'error',
+          message: 'Thêm mới thất bại',
+          desc: error,
+        });
       });
   };
+
+  useEffect(() => {
+    setDataProd({
+      nameProduct: '',
+      price: 0,
+      color: '',
+      descProduct: '',
+      quantity: 0,
+      addDate: '2022-02-15',
+      isActive: 1,
+    });
+    setReset('');
+  }, [reset]);
 
   return (
     <div className="wrap-addprod">
       <div className="wrap-addprod__item">
-        <InputCustom type="text" placeholder="Tên sản phẩm" onChange={nameProdOnchange} />
-        <InputCustom type="number" placeholder="Giá" onChange={priceProdOnchange} />
-        <InputCustom type="text" placeholder="Màu" onChange={colorProdOnchange} />
-        <InputCustom type="text" placeholder="Miêu tả" onChange={descProdOnchange} />
+        <InputCustom
+          type="text"
+          placeholder="Tên sản phẩm"
+          onChange={nameProdOnchange}
+          value={dataProd.nameProduct}
+        />
+        <InputCustom
+          type="number"
+          placeholder="Giá"
+          onChange={priceProdOnchange}
+          value={dataProd.price}
+        />
+        <InputCustom
+          type="text"
+          placeholder="Màu"
+          onChange={colorProdOnchange}
+          value={dataProd.color}
+        />
+        <InputCustom
+          type="text"
+          placeholder="Miêu tả"
+          onChange={descProdOnchange}
+          value={dataProd.descProduct}
+        />
         <InputCustom
           type="number"
           placeholder="Số lượng"
           onChange={quantityProdOnchange}
+          value={dataProd.quantity}
         />
         <div className="addprod-item__action">
           <div className="addprod-item__Switch">

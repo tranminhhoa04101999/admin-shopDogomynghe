@@ -1,14 +1,14 @@
-import "./App.css";
-import { Routes, Route, useNavigate } from "react-router-dom";
-import Dashboard from "./components/main/Dashboard";
-import Products from "./components/main/Products";
-import Layout from "./components/Layout";
-import Login from "./components/main/auth/Login";
-import Authenticate from "./components/main/auth/Authenticate";
-import { useEffect } from "react";
-import AddProduct from "./components/main/AddProduct";
+import './App.css';
+import { Routes, Route } from 'react-router-dom';
+import Dashboard from './components/main/Dashboard';
+import Products from './components/main/product/Products';
+import Layout from './components/Layout';
+import Login from './components/main/auth/Login';
+import Authenticate from './components/main/auth/Authenticate';
+import AddProduct from './components/main/product/AddProduct';
+import ShowProduct from './components/main/product/ShowProduct';
 
-export const LINKCONECT_BASE = "http://localhost:8080";
+export const LINKCONECT_BASE = 'http://localhost:8080';
 
 function App() {
   return (
@@ -18,6 +18,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/products" element={<Products />}>
+          <Route path="showproduct" element={<ShowProduct />} />
           <Route path="addproduct" element={<AddProduct />} />
         </Route>
 
