@@ -58,6 +58,21 @@ const AddProduct = () => {
   };
 
   const btnSubmitHandler = () => {
+    if (dataProd.nameProduct === '') {
+      openNotificationWithIcon({
+        type: 'warning',
+        message: 'Lỗi để trống',
+        desc: 'Vui lòng nhập tên sản phẩm',
+      });
+      return;
+    } else if (dataProd.color === '') {
+      openNotificationWithIcon({
+        type: 'warning',
+        message: 'Lỗi để trống',
+        desc: 'Vui lòng nhập màu sản phẩm',
+      });
+      return;
+    }
     fetch(LINKCONECT_BASE + '/addproduct', {
       method: 'POST',
       mode: 'cors',

@@ -2,3 +2,16 @@
   clear: none !important;
   margin: 6px 8px;
 }
+.wrapper-expan__product {
+  display: flex;
+}
+.ant-card-head-title {
+  font-size: 1.4rem;
+}
+.discount-card__product p {
+  font-size: 1.4rem;
+  margin-bottom: 4px;
+}
+.discount-card__product > .ant-card-body {
+  padding: 12px 24px;
+}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './ShowProduct.css';
-import { Table, notification, Popconfirm, Image } from 'antd';
+import { Table, notification, Popconfirm, Image, Card } from 'antd';
 import { LINKCONECT_BASE, LINKIMG_BASE } from '../../../App';
 import ButtonCustom from '../../base/ButtonCustom';
 import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
@@ -92,6 +92,7 @@ const ShowProduct = () => {
     {
       title: 'Miêu tả',
       dataIndex: 'descProduct',
+      width: '20%',
     },
     {
       title: 'Số Lượng còn',
@@ -135,6 +136,7 @@ const ShowProduct = () => {
           quantity: data[i].quantity,
           addDate: data[i].addDate,
           isActive: data[i].isActive === 1 ? 'Đang bán' : 'Dừng',
+          discount: data[i].discount,
         },
       ]);
     }
@@ -182,7 +184,6 @@ const ShowProduct = () => {
           desc: error,
         })
       );
-    console.log(imgProd);
   };
 
   return (
@@ -191,7 +192,22 @@ const ShowProduct = () => {
       dataSource={dataTable}
       expandable={{
         expandedRowRender: (record) => (
-          <div>
+          <div className="wrapper-expan__product">
+            <Card
+              title="Giảm Giá"
+              bordered={false}
+              style={{ width: 200, marginRight: '8px' }}
+              className="discount-card__product"
+            >
+              <p>Tên: {record.discount === null ? '' : record.discount.nameDiscount}</p>
+              <p>
+                Miêu Tả: {record.discount === null ? '' : record.discount.descDiscount}
+              </p>
+              <p>
+                Phần Trăm: {record.discount === null ? '' : record.discount.percent * 100}{' '}
+                %
+              </p>
+            </Card>
             <div style={{ marginBottom: '4px' }}>
               <ButtonCustom
                 style={{ fontSize: '1.5rem' }}
