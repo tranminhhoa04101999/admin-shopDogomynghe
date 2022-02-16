@@ -9,6 +9,7 @@ import AddProduct from './components/main/product/AddProduct';
 import ShowProduct from './components/main/product/ShowProduct';
 
 export const LINKCONECT_BASE = 'http://localhost:8080';
+export const LINKIMG_BASE = 'https://drive.google.com/uc?id=';
 
 function App() {
   return (
