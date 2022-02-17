@@ -7,6 +7,7 @@ import ButtonCustom from '../../base/ButtonCustom';
 import { LINKCONECT_BASE } from '../../../App';
 import { notification } from 'antd';
 import { useEffect } from 'react';
+import ButtonUploadImg from '../../base/ButtonUploadImg';
 
 const AddProduct = () => {
   const [reset, setReset] = useState('');
@@ -166,6 +167,9 @@ const AddProduct = () => {
               Tạo sản phẩm
             </ButtonCustom>
           </div>
+        </div>
+        <div className="addprod-item__action">
+          <ButtonUploadImg />
         </div>
       </div>
     </div>

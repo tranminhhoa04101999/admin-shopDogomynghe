@@ -9,7 +9,8 @@ import AddProduct from './components/main/product/AddProduct';
 import ShowProduct from './components/main/product/ShowProduct';
 
 export const LINKCONECT_BASE = 'http://localhost:8080';
-export const LINKIMG_BASE = 'https://drive.google.com/uc?id=';
+export const LINKIMG_BASE =
+  'https://firebasestorage.googleapis.com/v0/b/image-kddgmn-52ebf.appspot.com/o/images%2F';
 
 function App() {
   return (

@@ -55,10 +55,7 @@ const ShowProduct = () => {
   const actionBtn = (props) => {
     return (
       <div className="wraper-action">
-        <ButtonCustom
-          style={{ marginRight: '10px', padding: 0 }}
-          onClick={() => removeHandler({ id: props.idProd })}
-        >
+        <ButtonCustom style={{ marginRight: '10px', padding: 0 }} onClick={() => {}}>
           <FontAwesomeIcon icon={faEdit} />
         </ButtonCustom>
         <ButtonCustom style={{ padding: 0 }}>
@@ -167,7 +164,7 @@ const ShowProduct = () => {
         key={item.idImgProduct}
         width={100}
         height={100}
-        src={`${LINKIMG_BASE}${item.imgURL}`}
+        src={`${LINKIMG_BASE}${item.imgURL}.jpg?alt=media`}
       />
     ));
   }
