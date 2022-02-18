@@ -10,7 +10,8 @@ import { useEffect } from 'react';
 import ButtonUploadImg from '../../base/ButtonUploadImg';
 
 const AddProduct = () => {
-  const [reset, setReset] = useState('');
+  const [activeUpload, setActiveUpload] = useState(0);
+  const [idProdMax, setIdProdMax] = useState(0);
   const date = new Date();
   const dateNow =
     date.getFullYear().toString() +
@@ -24,7 +25,7 @@ const AddProduct = () => {
     color: '',
     descProduct: '',
     quantity: 0,
-    addDate: dateNow,
+    addDate: new Date(),
     isActive: 1,
   });
 
@@ -58,7 +59,7 @@ const AddProduct = () => {
     }
   };
 
-  const btnSubmitHandler = () => {
+  const btnSubmitHandler = async () => {
     if (dataProd.nameProduct === '') {
       openNotificationWithIcon({
         type: 'warning',
@@ -74,7 +75,8 @@ const AddProduct = () => {
       });
       return;
     }
-    fetch(LINKCONECT_BASE + '/addproduct', {
+    // them product
+    await fetch(LINKCONECT_BASE + '/addproduct', {
       method: 'POST',
       mode: 'cors',
       cache: 'no-cache',
@@ -96,8 +98,6 @@ const AddProduct = () => {
           message: 'Thêm mới thành công',
           desc: dataProd.nameProduct,
         });
-        // thêm thành công reset input
-        setReset('RESET');
       })
       .catch((error) => {
         openNotificationWithIcon({
@@ -106,20 +106,24 @@ const AddProduct = () => {
           desc: error,
         });
       });
-  };
+    //lấy idproduct mới tạo để upload ảnh
 
-  useEffect(() => {
+    await fetch('http://localhost:8080/getIdProductMax')
+      .then((response) => response.json())
+      .then((data) => setIdProdMax(data));
+    //sau khi có idProd cho upload ảnh theo id
+    setActiveUpload(1);
+    //thêm thành công reset input
     setDataProd({
       nameProduct: '',
       price: 0,
       color: '',
       descProduct: '',
       quantity: 0,
-      addDate: '2022-02-15',
+      addDate: new Date(),
       isActive: 1,
     });
-    setReset('');
-  }, [reset]);
+  };
 
   return (
     <div className="wrap-addprod">
@@ -154,22 +158,23 @@ const AddProduct = () => {
           onChange={quantityProdOnchange}
           value={dataProd.quantity}
         />
+        <div className="addprod-item__action wrapp-btn-upload">
+          <ButtonUploadImg activeUpload={activeUpload} idMaxProduct={idProdMax} />
+        </div>
         <div className="addprod-item__action">
           <div className="addprod-item__Switch">
             <span>Mở Bán</span>
             <Switch defaultChecked onChange={switchHandler} />
           </div>
+
           <div className="addprod-item__btn">
             <ButtonCustom
               style={{ backgroundColor: 'var(--color-btn-add)' }}
-              onClick={btnSubmitHandler}
+              onClick={() => btnSubmitHandler()}
             >
               Tạo sản phẩm
             </ButtonCustom>
           </div>
-        </div>
-        <div className="addprod-item__action">
-          <ButtonUploadImg />
         </div>
       </div>
     </div>

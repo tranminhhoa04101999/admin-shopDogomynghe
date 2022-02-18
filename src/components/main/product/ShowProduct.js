@@ -12,7 +12,7 @@ const ShowProduct = () => {
   const [imgProd, setImgProd] = useState([
     {
       idImgProduct: 0,
-      imgURL: '',
+      imgURL: 'defaultImage',
     },
   ]);
 
@@ -158,7 +158,7 @@ const ShowProduct = () => {
   }, []);
 
   var ShowAnh = <div></div>;
-  if (imgProd[0].imgURL !== '') {
+  if (imgProd.length !== 0) {
     ShowAnh = imgProd.map((item) => (
       <Image
         key={item.idImgProduct}
