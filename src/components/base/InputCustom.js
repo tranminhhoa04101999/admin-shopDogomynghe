@@ -12,6 +12,7 @@ const InputCustom = (props) => {
         placeholder={props.placeholder}
         onChange={props.onChange}
         min={0}
+        disabled={props.disabled}
       />
     </div>
   );

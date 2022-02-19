@@ -7,6 +7,7 @@ import Login from './components/main/auth/Login';
 import Authenticate from './components/main/auth/Authenticate';
 import AddProduct from './components/main/product/AddProduct';
 import ShowProduct from './components/main/product/ShowProduct';
+import EditProduct from './components/main/product/EditProduct';
 
 export const LINKCONECT_BASE = 'http://localhost:8080';
 export const LINKIMG_BASE =
@@ -21,6 +22,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/products" element={<Products />}>
           <Route path="showproduct" element={<ShowProduct />} />
+          <Route path="editproduct" element={<EditProduct />} />
           <Route path="addproduct" element={<AddProduct />} />
         </Route>
 

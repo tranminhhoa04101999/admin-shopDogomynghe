@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import './ShowProduct.css';
-import { Table, notification, Popconfirm, Image, Card } from 'antd';
+import { Table, notification, Popconfirm, Image, Card, Input, Space, Button } from 'antd';
 import { LINKCONECT_BASE, LINKIMG_BASE } from '../../../App';
 import ButtonCustom from '../../base/ButtonCustom';
 import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useNavigate } from 'react-router-dom';
+import { SearchOutlined } from '@ant-design/icons';
+import { storage } from '../../../firebase';
+import { ref, deleteObject } from 'firebase/storage';
 
 const ShowProduct = () => {
   const [dataProd, setDataProd] = useState([]);
@@ -15,10 +19,12 @@ const ShowProduct = () => {
       imgURL: 'defaultImage',
     },
   ]);
+  const navigate = useNavigate();
 
-  const removeHandler = (props) => {
+  const removeHandler = async (props) => {
     const idProd = props.id;
-    fetch(LINKCONECT_BASE + '/deleteproduct', {
+    // xóa cả ảnh liên quan database
+    await fetch(LINKCONECT_BASE + `/deleteImgByIdProduct?idProduct=${idProd}`, {
       method: 'POST',
       mode: 'cors',
       cache: 'no-cache',
@@ -31,7 +37,33 @@ const ShowProduct = () => {
       },
       redirect: 'follow',
       referrerPolicy: 'no-referrer',
-      body: `idProd=${idProd}`,
+    })
+      .then((response) => response)
+      .then((data) => {
+        // xóa thành công reload component
+        // window.location.reload(false);
+      })
+      .catch((error) => {
+        openNotificationWithIcon({
+          type: 'error',
+          message: 'Xóa imgproduc thất bại',
+          desc: error,
+        });
+      });
+    // xoa prodcut database
+    await fetch(LINKCONECT_BASE + `/deleteproduct?idProd=${idProd}`, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        // 'Content-Type': 'application/json',
+        Accepts: '*/*',
+
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
     })
       .then((response) => response)
       .then((data) => {
@@ -40,8 +72,6 @@ const ShowProduct = () => {
           message: 'Xóa thành công',
           desc: 'Id: ' + idProd,
         });
-        // xóa thành công reload component
-        window.location.reload(false);
       })
       .catch((error) => {
         openNotificationWithIcon({
@@ -49,18 +79,49 @@ const ShowProduct = () => {
           message: 'Xóa thất bại',
           desc: error,
         });
+        return;
       });
+    var dataImgRemove = [];
+    // xóa cả ảnh liên quan firebase
+    // lay ra imgremove theo idprodc
+    await fetch(`http://localhost:8080/imgproductwith?idProduct=${idProd}`)
+      .then((response) => response.json())
+      .then((data) => (dataImgRemove = data));
+    console.log('dataImgRemove', dataImgRemove);
+    if (dataImgRemove.length !== 0) {
+      dataImgRemove.map((item) => {
+        const desertRef = ref(storage, `images/${item.imgURL}.jpg`);
+        deleteObject(desertRef)
+          .then(() => {
+            console.log('xoa anh thanh cong');
+          })
+          .catch((error) => {
+            console.log('xoa anh that bai');
+            // Uh-oh, an error occurred!
+          });
+      });
+    }
+    window.location.reload(false);
+  };
+
+  const editHandler = (props) => {
+    navigate('/products/editproduct', { state: { idProd: props.id } });
   };
 
   const actionBtn = (props) => {
     return (
       <div className="wraper-action">
-        <ButtonCustom style={{ marginRight: '10px', padding: 0 }} onClick={() => {}}>
-          <FontAwesomeIcon icon={faEdit} />
+        <ButtonCustom style={{ marginRight: '10px', padding: 0 }}>
+          <Popconfirm
+            title="bạn muốn sửa?"
+            onConfirm={() => editHandler({ id: props.idProd })}
+          >
+            <FontAwesomeIcon icon={faEdit} />
+          </Popconfirm>
         </ButtonCustom>
         <ButtonCustom style={{ padding: 0 }}>
           <Popconfirm
-            title="Sure to delete?"
+            title="Bạn muốn xóa?"
             onConfirm={() => removeHandler({ id: props.idProd })}
           >
             <FontAwesomeIcon icon={faTrashAlt} />
@@ -76,6 +137,51 @@ const ShowProduct = () => {
       filterSearch: true,
       filterMode: 'tree',
       width: '20%',
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => {
+        return (
+          <div>
+            <Input
+              onPressEnter={() => {
+                confirm();
+              }}
+              onBlur={() => {
+                confirm();
+              }}
+              value={selectedKeys[0]}
+              onChange={(e) => {
+                setSelectedKeys(e.target.value ? [e.target.value] : []);
+              }}
+              autoFocus
+              placeholder="Nhập tên cần tìm"
+            />
+            <Space>
+              <Button
+                type="primary"
+                onClick={() => confirm()}
+                icon={<SearchOutlined />}
+                size="small"
+                style={{ width: 90 }}
+              >
+                Search
+              </Button>
+              <Button
+                onClick={() => {
+                  clearFilters();
+                  confirm();
+                }}
+                size="small"
+                style={{ width: 90 }}
+              >
+                Reset
+              </Button>
+            </Space>
+          </div>
+        );
+      },
+      filterIcon: <SearchOutlined />,
+      onFilter: (value, record) => {
+        return record.nameProduct.toLowerCase().includes(value.toLowerCase());
+      },
     },
 
     {

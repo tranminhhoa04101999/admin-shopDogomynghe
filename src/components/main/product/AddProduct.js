@@ -8,10 +8,12 @@ import { LINKCONECT_BASE } from '../../../App';
 import { notification } from 'antd';
 import { useEffect } from 'react';
 import ButtonUploadImg from '../../base/ButtonUploadImg';
+import { useNavigate } from 'react-router-dom';
 
 const AddProduct = () => {
   const [activeUpload, setActiveUpload] = useState(0);
   const [idProdMax, setIdProdMax] = useState(0);
+  const navigate = useNavigate();
   const date = new Date();
   const dateNow =
     date.getFullYear().toString() +
@@ -107,22 +109,32 @@ const AddProduct = () => {
         });
       });
     //lấy idproduct mới tạo để upload ảnh
-
+    let idMax = 0;
     await fetch('http://localhost:8080/getIdProductMax')
       .then((response) => response.json())
-      .then((data) => setIdProdMax(data));
+      .then(
+        (data) => {
+          idMax = data;
+        } //setIdProdMax(data)
+      );
     //sau khi có idProd cho upload ảnh theo id
+    // setActiveUpload(1);
+    setDataHandler({ idMax: idMax });
+  };
+
+  const setDataHandler = (props) => {
+    setIdProdMax(props.idMax);
     setActiveUpload(1);
-    //thêm thành công reset input
-    setDataProd({
-      nameProduct: '',
-      price: 0,
-      color: '',
-      descProduct: '',
-      quantity: 0,
-      addDate: new Date(),
-      isActive: 1,
-    });
+    navigate('/products/showproduct');
+    // setDataProd({
+    //   nameProduct: '',
+    //   price: 0,
+    //   color: '',
+    //   descProduct: '',
+    //   quantity: 0,
+    //   addDate: new Date(),
+    //   isActive: 1,
+    // });
   };
 
   return (
@@ -170,7 +182,7 @@ const AddProduct = () => {
           <div className="addprod-item__btn">
             <ButtonCustom
               style={{ backgroundColor: 'var(--color-btn-add)' }}
-              onClick={() => btnSubmitHandler()}
+              onClick={btnSubmitHandler}
             >
               Tạo sản phẩm
             </ButtonCustom>
