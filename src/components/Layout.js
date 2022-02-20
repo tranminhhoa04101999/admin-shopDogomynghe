@@ -1,34 +1,34 @@
-import HeaderMain from "./header/HeaderMain";
-import "./Layout.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChartLine } from "@fortawesome/free-solid-svg-icons";
-import { faProductHunt } from "@fortawesome/free-brands-svg-icons";
-import { NavLink } from "react-router-dom";
+import HeaderMain from './header/HeaderMain';
+import './Layout.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChartLine } from '@fortawesome/free-solid-svg-icons';
+import { faProductHunt } from '@fortawesome/free-brands-svg-icons';
+import { NavLink } from 'react-router-dom';
 
 const Layout = (props) => {
-  const data = JSON.parse(localStorage.getItem("infoAccountLogined"));
+  const data = JSON.parse(localStorage.getItem('infoAccountLogined'));
 
   return (
     <div>
       <HeaderMain />
       <div className="wrapper">
         {data === undefined || data === null ? (
-          ""
+          ''
         ) : (
           <div className="main-nav">
             <NavLink
               to="/dashboard"
               className={({ isActive }) =>
-                isActive ? "main-nav-item main-nav-item--active" : "main-nav-item"
+                isActive ? 'main-nav-item main-nav-item--active' : 'main-nav-item'
               }
             >
               <FontAwesomeIcon icon={faChartLine} className="main-nav__icon" />
               Dashboard
             </NavLink>
             <NavLink
-              to="/users"
+              to="/account"
               className={({ isActive }) =>
-                isActive ? "main-nav-item main-nav-item--active" : "main-nav-item"
+                isActive ? 'main-nav-item main-nav-item--active' : 'main-nav-item'
               }
             >
               <FontAwesomeIcon icon={faChartLine} className="main-nav__icon" />
@@ -37,7 +37,7 @@ const Layout = (props) => {
             <NavLink
               to="/products"
               className={({ isActive }) =>
-                isActive ? "main-nav-item main-nav-item--active" : "main-nav-item"
+                isActive ? 'main-nav-item main-nav-item--active' : 'main-nav-item'
               }
             >
               <FontAwesomeIcon icon={faProductHunt} className="main-nav__icon" />
@@ -46,7 +46,7 @@ const Layout = (props) => {
             <NavLink
               to="/orders"
               className={({ isActive }) =>
-                isActive ? "main-nav-item main-nav-item--active" : "main-nav-item"
+                isActive ? 'main-nav-item main-nav-item--active' : 'main-nav-item'
               }
             >
               <FontAwesomeIcon icon={faProductHunt} className="main-nav__icon" />

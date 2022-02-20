@@ -1,0 +1,14 @@
+.wrap-account {
+}
+.header-account {
+  display: flex;
+}
+.header-account__btn {
+  border: 1px solid #888;
+  border-radius: 8px;
+  margin-right: 4px;
+}
+.header-account__btn:hover {
+  background-color: var(--color-btn-add);
+  border-color: var(--color-btn-add);
+}

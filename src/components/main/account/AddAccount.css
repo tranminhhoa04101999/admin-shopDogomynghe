@@ -1,0 +1,27 @@
+.addaccount-item__Switch {
+  display: flex;
+  justify-content: center;
+  margin-right: 50px;
+}
+.addaccount-item__action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.addaccount-item__Switch span {
+  font-size: 1.6rem;
+  line-height: 1.8rem;
+  margin-right: 4px;
+}
+.wrapp-btn-upload {
+  margin: 40px 0;
+}
+.wrap-account-select {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.account-select__title {
+  font-size: 1.6rem;
+  margin-right: 10px;
+}

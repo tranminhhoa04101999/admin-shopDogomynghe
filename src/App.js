@@ -8,6 +8,10 @@ import Authenticate from './components/main/auth/Authenticate';
 import AddProduct from './components/main/product/AddProduct';
 import ShowProduct from './components/main/product/ShowProduct';
 import EditProduct from './components/main/product/EditProduct';
+import Account from './components/main/account/Account';
+import ShowAccount from './components/main/account/ShowAccount';
+import AddAccount from './components/main/account/AddAccount';
+import EditAccount from './components/main/account/EditAccount';
 
 export const LINKCONECT_BASE = 'http://localhost:8080';
 export const LINKIMG_BASE =
@@ -20,6 +24,12 @@ function App() {
         <Route path="/authenticate" element={<Authenticate />} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/account" element={<Account />}>
+          <Route path="showAccount" element={<ShowAccount />} />
+          <Route path="editAccount" element={<EditAccount />} />
+          <Route path="addAccount" element={<AddAccount />} />
+        </Route>
+
         <Route path="/products" element={<Products />}>
           <Route path="showproduct" element={<ShowProduct />} />
           <Route path="editproduct" element={<EditProduct />} />
