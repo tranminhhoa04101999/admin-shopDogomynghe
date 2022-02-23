@@ -1,0 +1,14 @@
+.wrap-discount {
+}
+.header-discount {
+  display: flex;
+}
+.header-discount__btn {
+  border: 1px solid #888;
+  border-radius: 8px;
+  margin-right: 4px;
+}
+.header-discount__btn:hover {
+  background-color: var(--color-btn-add);
+  border-color: var(--color-btn-add);
+}

@@ -16,6 +16,10 @@ import Category from './components/main/category/Category';
 import AddCategory from './components/main/category/AddCategory';
 import ShowCategory from './components/main/category/ShowCategory';
 import EditCategory from './components/main/category/EditCategory';
+import Discount from './components/main/discount/Discount';
+import ShowDiscount from './components/main/discount/ShowDiscount';
+import AddDiscount from './components/main/discount/AddDiscount';
+import EditDiscount from './components/main/discount/EditDiscount';
 
 export const LINKCONECT_BASE = 'http://localhost:8080';
 export const LINKIMG_BASE =
@@ -43,6 +47,11 @@ function App() {
           <Route path="showcategory" element={<ShowCategory />} />
           <Route path="editcategory" element={<EditCategory />} />
           <Route path="addcategory" element={<AddCategory />} />
+        </Route>
+        <Route path="/discount" element={<Discount />}>
+          <Route path="showdiscount" element={<ShowDiscount />} />
+          <Route path="editdiscount" element={<EditDiscount />} />
+          <Route path="adddiscount" element={<AddDiscount />} />
         </Route>
 
         <Route path="*" element={<Authenticate to="/authenticate" replace />} />

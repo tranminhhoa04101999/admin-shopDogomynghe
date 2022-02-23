@@ -5,9 +5,7 @@ import { useState } from 'react';
 import { Switch } from 'antd';
 import ButtonCustom from '../../base/ButtonCustom';
 import { LINKCONECT_BASE } from '../../../App';
-import { notification, Select, Image } from 'antd';
-import { useEffect } from 'react';
-import ButtonUploadImg from '../../base/ButtonUploadImg';
+import { notification, Image } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { storage } from '../../../firebase';
 

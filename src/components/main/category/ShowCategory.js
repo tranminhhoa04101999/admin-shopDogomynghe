@@ -7,12 +7,19 @@ import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { LINKCONECT_BASE, LINKIMG_BASE } from '../../../App';
+import { storage } from '../../../firebase';
+import { ref, deleteObject } from 'firebase/storage';
 
 const ShowCategory = () => {
   const navigate = useNavigate();
-  const removeHandler = () => {};
   const [dataTable, setDataTable] = useState([]);
   const [dataCategory, setDataCategory] = useState([]);
+  const openNotificationWithIcon = (props) => {
+    notification[props.type]({
+      message: props.message,
+      description: props.desc,
+    });
+  };
 
   useEffect(() => {
     // get all category
@@ -51,6 +58,49 @@ const ShowCategory = () => {
   const editHandler = (props) => {
     navigate('/category/editcategory', { state: { data: props.data } });
   };
+  const removeHandler = (props) => {
+    fetch(`${LINKCONECT_BASE}/deletecategoryBy?idCategory=${props.data.idCategory}`, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        // 'Content-Type': 'application/json',
+        Accepts: '*/*',
+
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+    })
+      .then((response) => response.json())
+      .then((data) =>
+        openNotificationWithIcon({
+          type: 'success',
+          message: 'Xóa thành công',
+          desc: 'Sản phẩm có Id: ' + props.data.idCategory,
+        })
+      )
+      .catch((error) =>
+        openNotificationWithIcon({
+          type: 'success',
+          message: 'Xóa thành công',
+          desc: 'Sản phẩm có Id: ' + props.data.idCategory,
+        })
+      );
+    //xoa hinh trne firebase
+    const desertRef = ref(storage, `images/${props.data.imgURL}.jpg`);
+    deleteObject(desertRef)
+      .then(() => {
+        console.log('xoa anh thanh cong');
+      })
+      .catch((error) => {
+        console.log('xoa anh that bai');
+        // Uh-oh, an error occurred!
+      });
+    window.location.reload(false);
+  };
+
   const actionBtn = (props) => {
     return (
       <div className="wraper-action">
@@ -63,7 +113,10 @@ const ShowCategory = () => {
           </Popconfirm>
         </ButtonCustom>
         <ButtonCustom style={{ padding: 0 }}>
-          <Popconfirm title="Bạn muốn xóa?" onConfirm={() => removeHandler()}>
+          <Popconfirm
+            title="Bạn muốn xóa?"
+            onConfirm={() => removeHandler({ data: props.data })}
+          >
             <FontAwesomeIcon icon={faTrashAlt} />
           </Popconfirm>
         </ButtonCustom>
@@ -112,43 +165,7 @@ const ShowCategory = () => {
       width: '8%',
     },
   ];
-  return (
-    <Table
-      columns={columns}
-      dataSource={dataTable}
-      // expandable={{
-      //   expandedRowRender: (record) => (
-      //     <div className="wrapper-expan__product">
-      //       <Card
-      //         title="Giảm Giá"
-      //         bordered={false}
-      //         style={{ width: 200, marginRight: '8px' }}
-      //         className="discount-card__product"
-      //       >
-      //         <p>Tên: {record.discount === null ? '' : record.discount.nameDiscount}</p>
-      //         <p>
-      //           Miêu Tả: {record.discount === null ? '' : record.discount.descDiscount}
-      //         </p>
-      //         <p>
-      //           Phần Trăm: {record.discount === null ? '' : record.discount.percent * 100}{' '}
-      //           %
-      //         </p>
-      //       </Card>
-      //       <div style={{ marginBottom: '4px' }}>
-      //         <ButtonCustom
-      //           style={{ fontSize: '1.5rem' }}
-      //           onClick={() => loadImgHandler({ idProd: record.key })}
-      //         >
-      //           Hiển thị ảnh
-      //         </ButtonCustom>
-      //       </div>
-      //       <div>{imgProd.length > 0 ? ShowAnh : <div></div>}</div>
-      //     </div>
-      //   ),
-      //   rowExpandable: (record) => record.name !== 'Not Expandable',
-      //}}
-    />
-  );
+  return <Table columns={columns} dataSource={dataTable} />;
 };
 
 export default ShowCategory;

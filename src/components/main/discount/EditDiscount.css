@@ -1,0 +1,24 @@
+.editdiscount-item__Switch {
+  display: flex;
+  justify-content: center;
+  margin-right: 50px;
+}
+.editdiscount-item__action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.editdiscount-item__Switch span {
+  font-size: 1.6rem;
+  line-height: 1.8rem;
+  margin-right: 4px;
+}
+.wrapp-btn-upload {
+  margin: 40px 0;
+}
+.wrap-imageDefault-edit {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  align-items: center;
+}
