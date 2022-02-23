@@ -274,6 +274,7 @@ const EditProduct = () => {
           placeholder="Id sản phẩm"
           value={dataProd.idProduct}
           disabled={true}
+          onChange={() => {}}
         />
         <InputCustom
           type="text"

@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { storage } from '../../firebase';
-// import { ref, deleteObject } from 'firebase/storage';
 import './ButtonUploadImg.css';
 
 import { Image } from 'antd';
-// import { useEffect } from 'react';
 
 const ButtonUploadImg = (props) => {
   const [img, setImg] = useState(null);
   const [imgURL, setImgURL] = useState(['']);
-  // const [activeUpload, setActiveUpload] = useState(0);
   const handlerChange = (event) => {
     setImgURL([]);
     if (event.target.files[0]) {

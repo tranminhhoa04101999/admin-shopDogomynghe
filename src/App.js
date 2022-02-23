@@ -41,8 +41,8 @@ function App() {
         </Route>
         <Route path="/category" element={<Category />}>
           <Route path="showcategory" element={<ShowCategory />} />
-          <Route path="editproduct" element={<EditCategory />} />
-          <Route path="addproduct" element={<AddCategory />} />
+          <Route path="editcategory" element={<EditCategory />} />
+          <Route path="addcategory" element={<AddCategory />} />
         </Route>
 
         <Route path="*" element={<Authenticate to="/authenticate" replace />} />

@@ -1,0 +1,18 @@
+.addcategory-item__Switch {
+  display: flex;
+  justify-content: center;
+  margin-right: 50px;
+}
+.addcategory-item__action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.addcategory-item__Switch span {
+  font-size: 1.6rem;
+  line-height: 1.8rem;
+  margin-right: 4px;
+}
+.wrapp-btn-upload {
+  margin: 40px 0;
+}

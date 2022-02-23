@@ -37,6 +37,7 @@ const ShowCategory = () => {
                   descCategory: data[i].descCategory,
                   quantityProduct: data1,
                   isActive: data[i].isActive === 1 ? 'Đang bán' : 'Dừng',
+                  data: data[i],
                 },
               ]);
             });
@@ -48,13 +49,16 @@ const ShowCategory = () => {
   }, []);
 
   const editHandler = (props) => {
-    navigate('/category/editcategory', { state: { idProd: props.id } });
+    navigate('/category/editcategory', { state: { data: props.data } });
   };
   const actionBtn = (props) => {
     return (
       <div className="wraper-action">
         <ButtonCustom style={{ marginRight: '10px', padding: 0 }}>
-          <Popconfirm title="bạn muốn sửa?" onConfirm={() => editHandler()}>
+          <Popconfirm
+            title="bạn muốn sửa?"
+            onConfirm={() => editHandler({ data: props.data })}
+          >
             <FontAwesomeIcon icon={faEdit} />
           </Popconfirm>
         </ButtonCustom>
@@ -104,7 +108,7 @@ const ShowCategory = () => {
     {
       title: 'Thao tác',
       dataIndex: 'action',
-      render: (_, record) => actionBtn(),
+      render: (_, record) => actionBtn({ data: record.data }),
       width: '8%',
     },
   ];
