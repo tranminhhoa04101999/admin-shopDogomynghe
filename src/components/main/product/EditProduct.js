@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import './EditProduct.css';
-import { Switch, Image, Button } from 'antd';
+import { Switch, Image, Button, Select } from 'antd';
 import ButtonCustom from '../../base/ButtonCustom';
 import { LINKCONECT_BASE, LINKIMG_BASE } from '../../../App';
 import { notification } from 'antd';
@@ -14,10 +14,19 @@ const EditProduct = () => {
   const [img, setImg] = useState(null);
   const [idProd, setIdProd] = useState(0);
   const [imgURL, setImgURL] = useState(['']);
-
   const [imgDefaultProd, setImgDefaultProd] = useState([]);
   const [imgRemoveProd, setimgRemoveProd] = useState([]);
+  const { Option } = Select;
 
+  const [dataCategory, setDataCategory] = useState([
+    {
+      idCategory: 0,
+      name: 'deafault',
+      desc: null,
+      imgURL: 'defaultImage',
+      isActive: 1,
+    },
+  ]);
   const [dataProd, setDataProd] = useState({
     idProduct: 0,
     nameProduct: '',
@@ -27,6 +36,7 @@ const EditProduct = () => {
     quantity: 0,
     addDate: new Date(),
     isActive: 1,
+    category: null,
     discount: null,
   });
 
@@ -50,9 +60,12 @@ const EditProduct = () => {
         .then((data) => {
           setImgDefaultProd(data);
         });
+      //lấy category all
+      fetch(`${LINKCONECT_BASE}/allcategory`)
+        .then((response) => response.json())
+        .then((data) => setDataCategory(data));
     }
   }, []);
-
   const openNotificationWithIcon = (props) => {
     notification[props.type]({
       message: props.message,
@@ -81,6 +94,10 @@ const EditProduct = () => {
     } else {
       setDataProd((prevData) => ({ ...prevData, isActive: 0 }));
     }
+  };
+  const selectCategoryChangeHandler = (value) => {
+    const categorySelect = dataCategory.find((item) => item.idCategory === value);
+    setDataProd((prevData) => ({ ...prevData, category: categorySelect }));
   };
 
   const btnEditHandler = async (props) => {
@@ -288,6 +305,24 @@ const EditProduct = () => {
           onChange={quantityProdOnchange}
           value={dataProd.quantity}
         />
+        <div className="wrapper-product__category" style={{ marginBottom: '10px' }}>
+          <span>Thể loại: </span>
+          <Select
+            value={
+              dataProd.category !== null
+                ? dataProd.category.idCategory
+                : dataCategory[0].idCategory
+            }
+            style={{ width: 200 }}
+            onChange={selectCategoryChangeHandler}
+          >
+            {dataCategory.map((item) => (
+              <Option key={item.idCategory} value={item.idCategory}>
+                {item.name}
+              </Option>
+            ))}
+          </Select>
+        </div>
         <div className="wrap-imageDefault-edit">
           {imgDefaultProd.length !== 0
             ? imgDefaultProd.map((item) => (

@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Switch } from 'antd';
 import ButtonCustom from '../../base/ButtonCustom';
 import { LINKCONECT_BASE } from '../../../App';
-import { notification } from 'antd';
+import { notification, Select } from 'antd';
 import { useEffect } from 'react';
 import ButtonUploadImg from '../../base/ButtonUploadImg';
 import { useNavigate } from 'react-router-dom';
@@ -13,14 +13,18 @@ import { useNavigate } from 'react-router-dom';
 const AddProduct = () => {
   const [activeUpload, setActiveUpload] = useState(0);
   const [idProdMax, setIdProdMax] = useState(0);
+  const [dataCategory, setDataCategory] = useState([
+    {
+      idCategory: 0,
+      name: 'deafault',
+      desc: null,
+      imgURL: 'defaultImage',
+      isActive: 1,
+    },
+  ]);
   const navigate = useNavigate();
-  const date = new Date();
-  const dateNow =
-    date.getFullYear().toString() +
-    '-' +
-    date.getMonth().toString() +
-    '-' +
-    date.getDay().toString();
+  const { Option } = Select;
+
   const [dataProd, setDataProd] = useState({
     nameProduct: '',
     price: 0,
@@ -29,7 +33,15 @@ const AddProduct = () => {
     quantity: 0,
     addDate: new Date(),
     isActive: 1,
+    category: null,
   });
+
+  useEffect(() => {
+    //lấy category all
+    fetch(`${LINKCONECT_BASE}/allcategory`)
+      .then((response) => response.json())
+      .then((data) => setDataCategory(data));
+  }, []);
 
   const openNotificationWithIcon = (props) => {
     notification[props.type]({
@@ -60,6 +72,10 @@ const AddProduct = () => {
       setDataProd((prevData) => ({ ...prevData, isActive: 0 }));
     }
   };
+  const selectCategoryChangeHandler = (value) => {
+    const categorySelect = dataCategory.find((item) => item.idCategory === value);
+    setDataProd((prevData) => ({ ...prevData, category: categorySelect }));
+  };
 
   const btnSubmitHandler = async () => {
     if (dataProd.nameProduct === '') {
@@ -74,6 +90,13 @@ const AddProduct = () => {
         type: 'warning',
         message: 'Lỗi để trống',
         desc: 'Vui lòng nhập màu sản phẩm',
+      });
+      return;
+    } else if (dataProd.category === null) {
+      openNotificationWithIcon({
+        type: 'warning',
+        message: 'Lỗi để trống',
+        desc: 'Thể loại chưa được chọn',
       });
       return;
     }
@@ -170,6 +193,25 @@ const AddProduct = () => {
           onChange={quantityProdOnchange}
           value={dataProd.quantity}
         />
+        <div className="wrapper-product__category">
+          <span>Thể loại: </span>
+          <Select
+            value={
+              dataProd.category !== null
+                ? dataProd.category.idCategory
+                : dataCategory[0].idCategory
+            }
+            style={{ width: 200 }}
+            onChange={selectCategoryChangeHandler}
+          >
+            {dataCategory.map((item) => (
+              <Option key={item.idCategory} value={item.idCategory}>
+                {item.name}
+              </Option>
+            ))}
+          </Select>
+        </div>
+
         <div className="addprod-item__action wrapp-btn-upload">
           <ButtonUploadImg activeUpload={activeUpload} idMaxProduct={idProdMax} />
         </div>

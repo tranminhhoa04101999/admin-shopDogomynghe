@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { storage } from '../../firebase';
-import { ref, deleteObject } from 'firebase/storage';
+// import { ref, deleteObject } from 'firebase/storage';
 import './ButtonUploadImg.css';
 
 import { Image } from 'antd';
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 
 const ButtonUploadImg = (props) => {
   const [img, setImg] = useState(null);
   const [imgURL, setImgURL] = useState(['']);
-  const [activeUpload, setActiveUpload] = useState(0);
+  // const [activeUpload, setActiveUpload] = useState(0);
   const handlerChange = (event) => {
     setImgURL([]);
     if (event.target.files[0]) {
@@ -72,17 +72,17 @@ const ButtonUploadImg = (props) => {
   };
 
   // xoa trne firebase
-  const handlerRemove = () => {
-    const desertRef = ref(storage, 'images/1.jpg');
-    deleteObject(desertRef)
-      .then(() => {
-        console.log('xoa anh thanh cong');
-      })
-      .catch((error) => {
-        console.log('xoa anh that bai');
-        // Uh-oh, an error occurred!
-      });
-  };
+  // const handlerRemove = () => {
+  //   const desertRef = ref(storage, 'images/1.jpg');
+  //   deleteObject(desertRef)
+  //     .then(() => {
+  //       console.log('xoa anh thanh cong');
+  //     })
+  //     .catch((error) => {
+  //       console.log('xoa anh that bai');
+  //       // Uh-oh, an error occurred!
+  //     });
+  // };
   // nếu ấn thêm sản phẩm chạy upload
   if (props.activeUpload === 1) {
     handlerUpload();

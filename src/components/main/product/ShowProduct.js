@@ -206,6 +206,10 @@ const ShowProduct = () => {
       dataIndex: 'addDate',
     },
     {
+      title: 'Thể loại',
+      dataIndex: 'nameCategory',
+    },
+    {
       title: 'Hoạt động',
       dataIndex: 'isActive',
     },
@@ -213,7 +217,7 @@ const ShowProduct = () => {
       title: 'Thao tác',
       dataIndex: 'action',
       render: (_, record) => actionBtn({ idProd: record.key }),
-      width: '10%',
+      width: '8%',
     },
   ];
 
@@ -239,6 +243,8 @@ const ShowProduct = () => {
           quantity: data[i].quantity,
           addDate: data[i].addDate,
           isActive: data[i].isActive === 1 ? 'Đang bán' : 'Dừng',
+          category: data[i].category,
+          nameCategory: data[i].category.name,
           discount: data[i].discount,
         },
       ]);

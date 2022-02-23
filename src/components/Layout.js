@@ -1,7 +1,7 @@
 import HeaderMain from './header/HeaderMain';
 import './Layout.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChartLine } from '@fortawesome/free-solid-svg-icons';
+import { faChartLine, faBox } from '@fortawesome/free-solid-svg-icons';
 import { faProductHunt } from '@fortawesome/free-brands-svg-icons';
 import { NavLink } from 'react-router-dom';
 
@@ -42,6 +42,15 @@ const Layout = (props) => {
             >
               <FontAwesomeIcon icon={faProductHunt} className="main-nav__icon" />
               Products
+            </NavLink>
+            <NavLink
+              to="/category"
+              className={({ isActive }) =>
+                isActive ? 'main-nav-item main-nav-item--active' : 'main-nav-item'
+              }
+            >
+              <FontAwesomeIcon icon={faBox} className="main-nav__icon" />
+              Category
             </NavLink>
             <NavLink
               to="/orders"

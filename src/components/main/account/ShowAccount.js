@@ -61,8 +61,12 @@ const ShowAccount = () => {
       title: 'ID',
       dataIndex: 'idAccount',
       filterSearch: true,
-      filterMode: 'tree',
       width: '5%',
+    },
+
+    {
+      title: 'Email',
+      dataIndex: 'email',
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => {
         return (
           <div>
@@ -106,13 +110,8 @@ const ShowAccount = () => {
       },
       filterIcon: <SearchOutlined />,
       onFilter: (value, record) => {
-        return record.idAccount.toLowerCase().includes(value.toLowerCase());
+        return record.email.toLowerCase().includes(value.toLowerCase());
       },
-    },
-
-    {
-      title: 'Email',
-      dataIndex: 'email',
     },
     {
       title: 'Password',
@@ -167,11 +166,17 @@ const ShowAccount = () => {
     //xóa thành công tự ra reload
     window.location.reload(false);
   };
+  const editAccountHandler = (props) => {
+    navigate('/account/editAccount', { state: { idAccount: props.idAccount } });
+  };
   const actionBtn = (props) => {
     return (
       <div className="wraper-action">
         <ButtonCustom style={{ marginRight: '10px', padding: 0 }}>
-          <Popconfirm title="bạn muốn sửa?" onConfirm={() => {}}>
+          <Popconfirm
+            title="bạn muốn sửa?"
+            onConfirm={() => editAccountHandler({ idAccount: props.idAccount })}
+          >
             <FontAwesomeIcon icon={faEdit} />
           </Popconfirm>
         </ButtonCustom>

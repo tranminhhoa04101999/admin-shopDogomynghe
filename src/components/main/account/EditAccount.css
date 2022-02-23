@@ -1,14 +1,14 @@
-.addprod-item__Switch {
+.editaccount-item__Switch {
   display: flex;
   justify-content: center;
   margin-right: 50px;
 }
-.addprod-item__action {
+.editaccount-item__action {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.addprod-item__Switch span {
+.editaccount-item__Switch span {
   font-size: 1.6rem;
   line-height: 1.8rem;
   margin-right: 4px;
@@ -16,13 +16,12 @@
 .wrapp-btn-upload {
   margin: 40px 0;
 }
-.wrapper-product__category {
+.wrap-account-select {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.wrapper-product__category span {
+.account-select__title {
   font-size: 1.6rem;
-  line-height: 1.8rem;
-  margin-right: 4px;
+  margin-right: 10px;
 }

@@ -12,6 +12,10 @@ import Account from './components/main/account/Account';
 import ShowAccount from './components/main/account/ShowAccount';
 import AddAccount from './components/main/account/AddAccount';
 import EditAccount from './components/main/account/EditAccount';
+import Category from './components/main/category/Category';
+import AddCategory from './components/main/category/AddCategory';
+import ShowCategory from './components/main/category/ShowCategory';
+import EditCategory from './components/main/category/EditCategory';
 
 export const LINKCONECT_BASE = 'http://localhost:8080';
 export const LINKIMG_BASE =
@@ -34,6 +38,11 @@ function App() {
           <Route path="showproduct" element={<ShowProduct />} />
           <Route path="editproduct" element={<EditProduct />} />
           <Route path="addproduct" element={<AddProduct />} />
+        </Route>
+        <Route path="/category" element={<Category />}>
+          <Route path="showcategory" element={<ShowCategory />} />
+          <Route path="editproduct" element={<EditCategory />} />
+          <Route path="addproduct" element={<AddCategory />} />
         </Route>
 
         <Route path="*" element={<Authenticate to="/authenticate" replace />} />
