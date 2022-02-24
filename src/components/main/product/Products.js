@@ -1,10 +1,15 @@
 import NavLinkCustom from '../../base/NavLinkCustom';
 import { faPlus, faTabletAlt } from '@fortawesome/free-solid-svg-icons';
-
+import { useEffect } from 'react';
 import './Product.css';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 const Products = (props) => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    navigate('/products/showproduct');
+  }, []);
+
   return (
     <div className="wrap-product">
       <div className="header-product">

@@ -2,9 +2,14 @@ import React from 'react';
 import './Account.css';
 import NavLinkCustom from '../../base/NavLinkCustom';
 import { faPlus, faTabletAlt } from '@fortawesome/free-solid-svg-icons';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const Account = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    navigate('/account/showaccount');
+  }, []);
   return (
     <div className="wrap-account">
       <div className="header-account">

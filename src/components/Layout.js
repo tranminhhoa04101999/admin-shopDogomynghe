@@ -6,6 +6,7 @@ import {
   faBox,
   faShoppingBag,
   faPercent,
+  faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { faProductHunt } from '@fortawesome/free-brands-svg-icons';
 import { NavLink } from 'react-router-dom';
@@ -36,7 +37,7 @@ const Layout = (props) => {
                 isActive ? 'main-nav-item main-nav-item--active' : 'main-nav-item'
               }
             >
-              <FontAwesomeIcon icon={faChartLine} className="main-nav__icon" />
+              <FontAwesomeIcon icon={faUser} className="main-nav__icon" />
               Users
             </NavLink>
             <NavLink

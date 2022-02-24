@@ -2,9 +2,14 @@ import React from 'react';
 import './Category.css';
 import { faPlus, faTabletAlt } from '@fortawesome/free-solid-svg-icons';
 import NavLinkCustom from '../../base/NavLinkCustom';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const Category = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    navigate('/category/showcategory');
+  }, []);
   return (
     <div className="wrap-category">
       <div className="header-category">

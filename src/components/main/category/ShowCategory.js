@@ -58,47 +58,64 @@ const ShowCategory = () => {
   const editHandler = (props) => {
     navigate('/category/editcategory', { state: { data: props.data } });
   };
-  const removeHandler = (props) => {
-    fetch(`${LINKCONECT_BASE}/deletecategoryBy?idCategory=${props.data.idCategory}`, {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        // 'Content-Type': 'application/json',
-        Accepts: '*/*',
-
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      redirect: 'follow',
-      referrerPolicy: 'no-referrer',
-    })
+  const removeHandler = async (props) => {
+    let check = 0;
+    //kiểm tra coi có sản phẩm nào đang loại này không
+    await fetch(`${LINKCONECT_BASE}/allquantityby?idCategory=${props.data.idCategory}`)
       .then((response) => response.json())
-      .then((data) =>
-        openNotificationWithIcon({
-          type: 'success',
-          message: 'Xóa thành công',
-          desc: 'Sản phẩm có Id: ' + props.data.idCategory,
-        })
-      )
-      .catch((error) =>
-        openNotificationWithIcon({
-          type: 'success',
-          message: 'Xóa thành công',
-          desc: 'Sản phẩm có Id: ' + props.data.idCategory,
-        })
-      );
-    //xoa hinh trne firebase
-    const desertRef = ref(storage, `images/${props.data.imgURL}.jpg`);
-    deleteObject(desertRef)
-      .then(() => {
-        console.log('xoa anh thanh cong');
-      })
-      .catch((error) => {
-        console.log('xoa anh that bai');
-        // Uh-oh, an error occurred!
+      .then((data) => {
+        console.log(data);
+        check = data;
       });
-    window.location.reload(false);
+    if (check !== 0) {
+      openNotificationWithIcon({
+        type: 'warning',
+        message: 'Không được xóa',
+        desc: 'Loại này đang có sản phẩm áp dụng! chỉ được set hoạt động~',
+      });
+    } else {
+      // không có  sản phẩm nào loại này thì được xóa loại
+      fetch(`${LINKCONECT_BASE}/deletecategoryBy?idCategory=${props.data.idCategory}`, {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          // 'Content-Type': 'application/json',
+          Accepts: '*/*',
+
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+      })
+        .then((response) => response.json())
+        .then((data) =>
+          openNotificationWithIcon({
+            type: 'success',
+            message: 'Xóa thành công',
+            desc: 'Sản phẩm có Id: ' + props.data.idCategory,
+          })
+        )
+        .catch((error) =>
+          openNotificationWithIcon({
+            type: 'success',
+            message: 'Xóa thành công',
+            desc: 'Sản phẩm có Id: ' + props.data.idCategory,
+          })
+        );
+      //xoa hinh trne firebase
+      const desertRef = ref(storage, `images/${props.data.imgURL}.jpg`);
+      deleteObject(desertRef)
+        .then(() => {
+          console.log('xoa anh thanh cong');
+        })
+        .catch((error) => {
+          console.log('xoa anh that bai');
+          // Uh-oh, an error occurred!
+        });
+      window.location.reload(false);
+    }
   };
 
   const actionBtn = (props) => {
