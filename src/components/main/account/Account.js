@@ -8,7 +8,16 @@ import { useEffect } from 'react';
 const Account = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    navigate('/account/showaccount');
+    const data = JSON.parse(localStorage.getItem('infoAccountLogined'));
+    if (data === null || data === undefined) {
+      navigate('/authenticate');
+    } else {
+      if (data.role.idRole === 2) {
+        navigate('/product');
+      } else {
+        navigate('/account/showaccount');
+      }
+    }
   }, []);
   return (
     <div className="wrap-account">

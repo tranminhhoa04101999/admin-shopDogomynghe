@@ -8,7 +8,12 @@ import { useEffect } from 'react';
 const Category = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    navigate('/category/showcategory');
+    const data = JSON.parse(localStorage.getItem('infoAccountLogined'));
+    if (data === null || data === undefined) {
+      navigate('/authenticate');
+    } else {
+      navigate('/category/showcategory');
+    }
   }, []);
   return (
     <div className="wrap-category">

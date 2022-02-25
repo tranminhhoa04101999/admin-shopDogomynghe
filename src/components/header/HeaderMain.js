@@ -10,15 +10,25 @@ const HeaderMain = (props) => {
   const infoHandler = () => {
     navigate('/infomation');
   };
+
+  const logoutHandler = () => {
+    localStorage.removeItem('infoAccountLogined');
+    navigate('/authenticate');
+  };
+
   return (
     <header className="headerMain">
       <div className="headerMain__title">TMH Shop Quản Lý</div>
       {dataInfo === null || dataInfo === undefined ? (
         ''
       ) : (
-        <div className="headerMain_user-wrap" onClick={() => infoHandler()}>
+        <div className="headerMain_user-wrap">
           <FontAwesomeIcon icon={faUser} className="headerMain_user-icon" />
           <FontAwesomeIcon icon={faCaretDown} className="headerMain_user-icon" />
+          <ul className="dropdown-headerMain_user">
+            <li onClick={() => infoHandler()}>Thông tin</li>
+            <li onClick={() => logoutHandler()}>Đăng xuất</li>
+          </ul>
         </div>
       )}
     </header>

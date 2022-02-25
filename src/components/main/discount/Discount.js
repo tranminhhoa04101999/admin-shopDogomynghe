@@ -8,7 +8,12 @@ import { useEffect } from 'react';
 const Discount = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    navigate('/discount/showdiscount');
+    const data = JSON.parse(localStorage.getItem('infoAccountLogined'));
+    if (data === null || data === undefined) {
+      navigate('/authenticate');
+    } else {
+      navigate('/discount/showdiscount');
+    }
   }, []);
   return (
     <div className="wrap-discount">

@@ -15,10 +15,32 @@
 }
 .headerMain_user-wrap {
   cursor: pointer;
+  position: relative;
 }
 .headerMain_user-icon {
   font-size: 1.5rem;
   line-height: 2.1rem;
   color: var(--text-color);
   margin-right: 4px;
+}
+
+.headerMain_user-wrap:hover .dropdown-headerMain_user {
+  display: block;
+}
+.dropdown-headerMain_user {
+  position: absolute;
+  top: 17px;
+  right: 0;
+  list-style: none;
+  background-color: rgb(250, 245, 240);
+  border-radius: 4px;
+  display: none;
+  padding-left: 0;
+}
+.dropdown-headerMain_user li {
+  width: 90px;
+  font-size: 1.4rem;
+  padding: 4px 0;
+  border-bottom: 1px solid #999;
+  text-align: center;
 }

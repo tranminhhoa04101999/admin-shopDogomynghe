@@ -8,7 +8,12 @@ import { useEffect } from 'react';
 const Infomation = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    navigate('/infomation/showInfomation');
+    const data = JSON.parse(localStorage.getItem('infoAccountLogined'));
+    if (data === null || data === undefined) {
+      navigate('/authenticate');
+    } else {
+      navigate('/infomation/showInfomation');
+    }
   }, []);
 
   return (

@@ -10,9 +10,12 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faProductHunt } from '@fortawesome/free-brands-svg-icons';
 import { NavLink } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const Layout = (props) => {
   const data = JSON.parse(localStorage.getItem('infoAccountLogined'));
+
+  // console.log('data.role.idRole', data.role.idRole);
 
   return (
     <div>
@@ -22,24 +25,28 @@ const Layout = (props) => {
           ''
         ) : (
           <div className="main-nav">
-            <NavLink
-              to="/dashboard"
-              className={({ isActive }) =>
-                isActive ? 'main-nav-item main-nav-item--active' : 'main-nav-item'
-              }
-            >
-              <FontAwesomeIcon icon={faChartLine} className="main-nav__icon" />
-              Dashboard
-            </NavLink>
-            <NavLink
-              to="/account"
-              className={({ isActive }) =>
-                isActive ? 'main-nav-item main-nav-item--active' : 'main-nav-item'
-              }
-            >
-              <FontAwesomeIcon icon={faUser} className="main-nav__icon" />
-              Users
-            </NavLink>
+            {data.role.idRole !== 2 && (
+              <NavLink
+                to="/dashboard"
+                className={({ isActive }) =>
+                  isActive ? 'main-nav-item main-nav-item--active' : 'main-nav-item'
+                }
+              >
+                <FontAwesomeIcon icon={faChartLine} className="main-nav__icon" />
+                Dashboard
+              </NavLink>
+            )}
+            {data.role.idRole !== 2 && (
+              <NavLink
+                to="/account"
+                className={({ isActive }) =>
+                  isActive ? 'main-nav-item main-nav-item--active' : 'main-nav-item'
+                }
+              >
+                <FontAwesomeIcon icon={faUser} className="main-nav__icon" />
+                Users
+              </NavLink>
+            )}
             <NavLink
               to="/products"
               className={({ isActive }) =>

@@ -7,7 +7,12 @@ import { Outlet, useNavigate } from 'react-router-dom';
 const Products = (props) => {
   const navigate = useNavigate();
   useEffect(() => {
-    navigate('/products/showproduct');
+    const data = JSON.parse(localStorage.getItem('infoAccountLogined'));
+    if (data === null || data === undefined) {
+      navigate('/authenticate');
+    } else {
+      navigate('/products/showproduct');
+    }
   }, []);
 
   return (
