@@ -1,10 +1,9 @@
 import React from 'react';
 import './ShowAccount.css';
-import { Table, notification, Popconfirm, Image, Card, Input, Space, Button } from 'antd';
+import { Table, notification, Popconfirm, Input, Space, Button } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { storage } from '../../../firebase';
-import { ref, deleteObject } from 'firebase/storage';
-import { LINKCONECT_BASE, LINKIMG_BASE } from '../../../App';
+
+import { LINKCONECT_BASE } from '../../../App';
 import ButtonCustom from '../../base/ButtonCustom';
 import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

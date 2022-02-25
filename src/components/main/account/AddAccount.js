@@ -6,13 +6,10 @@ import { Switch, Select, Option } from 'antd';
 import ButtonCustom from '../../base/ButtonCustom';
 import { LINKCONECT_BASE } from '../../../App';
 import { notification } from 'antd';
-import ButtonUploadImg from '../../base/ButtonUploadImg';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
 const AddAccount = () => {
-  const [activeUpload, setActiveUpload] = useState(0);
-  const [idAccountMax, setIdAccountMax] = useState(0);
   const [allRole, setAllRole] = useState([]);
   const navigate = useNavigate();
 
