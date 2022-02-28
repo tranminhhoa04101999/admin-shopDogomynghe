@@ -23,6 +23,8 @@ import EditDiscount from './components/main/discount/EditDiscount';
 import Infomation from './components/main/auth/Infomation';
 import ShowInfomation from './components/main/auth/ShowInfomation';
 import ChangePassword from './components/main/auth/ChangePassword';
+import Orders from './components/main/Order/Orders';
+import ShowOrders from './components/main/Order/ShowOrders';
 
 export const LINKCONECT_BASE = 'http://localhost:8080';
 export const LINKIMG_BASE =
@@ -59,6 +61,9 @@ function App() {
         <Route path="/infomation" element={<Infomation />}>
           <Route path="showInfomation" element={<ShowInfomation />} />
           <Route path="changePassword" element={<ChangePassword />} />
+        </Route>
+        <Route path="/orders" element={<Orders />}>
+          <Route path="showorders" element={<ShowOrders />} />
         </Route>
         <Route path="*" element={<Authenticate to="/authenticate" replace />} />
       </Routes>

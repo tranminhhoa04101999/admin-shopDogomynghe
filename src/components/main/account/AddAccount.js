@@ -105,13 +105,22 @@ const AddAccount = () => {
       referrerPolicy: 'no-referrer',
       body: JSON.stringify(dataAccount),
     })
-      .then((response) => response)
+      .then((response) => response.json())
       .then((data) => {
-        openNotificationWithIcon({
-          type: 'success',
-          message: 'Thêm mới thành công',
-          desc: dataAccount.email,
-        });
+        if (data === 1) {
+          openNotificationWithIcon({
+            type: 'success',
+            message: 'Thêm mới thành công',
+            desc: dataAccount.email,
+          });
+          navigate('/account/showaccount');
+        } else if (data === 2) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Email này đã tồn tại',
+            desc: 'Không thể tạo mới',
+          });
+        }
       })
       .catch((error) => {
         openNotificationWithIcon({
@@ -121,7 +130,6 @@ const AddAccount = () => {
         });
       });
     //thêm thành công thì ra trang chính
-    navigate('/account/showaccount');
   };
   return (
     <div className="wrap-addaccount">

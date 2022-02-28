@@ -95,7 +95,8 @@ const EditAccount = () => {
       });
       return;
     }
-    fetch(`${LINKCONECT_BASE}/addAccount`, {
+    console.log('dataAccount', dataAccount);
+    fetch(`${LINKCONECT_BASE}/updateAccountWithAdmin`, {
       method: 'POST',
       mode: 'cors',
       cache: 'no-cache',
@@ -110,13 +111,14 @@ const EditAccount = () => {
       referrerPolicy: 'no-referrer',
       body: JSON.stringify(dataAccount),
     })
-      .then((response) => response)
+      .then((response) => response.json())
       .then((data) => {
         openNotificationWithIcon({
           type: 'success',
           message: 'Sửa thông tin tài khoản thành công',
           desc: dataAccount.email,
         });
+        console.log('first', data);
       })
       .catch((error) => {
         openNotificationWithIcon({
@@ -134,6 +136,7 @@ const EditAccount = () => {
           placeholder="Email"
           onChange={emailProdOnchange}
           value={dataAccount.email}
+          disabled={true}
         />
         <InputCustom
           type="text"

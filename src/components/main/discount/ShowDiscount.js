@@ -1,14 +1,12 @@
 import React from 'react';
 import './ShowDiscount.css';
 import ButtonCustom from '../../base/ButtonCustom';
-import { Table, notification, Popconfirm, Image, Card, Input, Space, Button } from 'antd';
+import { Table, notification, Popconfirm } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { LINKCONECT_BASE, LINKIMG_BASE } from '../../../App';
-import { storage } from '../../../firebase';
-import { ref, deleteObject } from 'firebase/storage';
+import { LINKCONECT_BASE } from '../../../App';
 
 const ShowDiscount = () => {
   const navigate = useNavigate();
@@ -127,6 +125,7 @@ const ShowDiscount = () => {
       );
     window.location.reload(false);
   };
+
   const actionBtn = (props) => {
     return (
       <div className="wraper-action">
