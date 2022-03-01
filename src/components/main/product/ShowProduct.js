@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { SearchOutlined } from '@ant-design/icons';
 import { storage } from '../../../firebase';
 import { ref, deleteObject } from 'firebase/storage';
+import moment from 'moment';
 
 const ShowProduct = () => {
   const [dataProd, setDataProd] = useState([]);
@@ -204,6 +205,7 @@ const ShowProduct = () => {
     {
       title: 'Ngày thêm',
       dataIndex: 'addDate',
+      render: (record) => moment(record.addDate).format('DD/MM/YYYY'),
     },
     {
       title: 'Thể loại',

@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './AddToProduct.css';
-import { Card, Select, Tag, Button, notification, Image } from 'antd';
+import { Card, Select, Tag, Button, notification, Image, Popconfirm } from 'antd';
 import { LINKCONECT_BASE, LINKIMG_BASE } from '../../../App';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import ButtonCustom from '../../base/ButtonCustom';
 const gridStyle = {
   width: '100%',
   textAlign: 'center',
@@ -143,6 +146,45 @@ const AddToProduct = () => {
         );
     }
   };
+  const removeProdHandler = (props) => {
+    fetch(`${LINKCONECT_BASE}/RemoveByIdProduct?idProduct=${props.idProduct}`, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        Accepts: '*/*',
+
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data === 1) {
+          openNotificationWithIcon({
+            type: 'success',
+            message: 'Thành công',
+            desc: 'Xóa sản phẩm ' + props.idProduct + ' khỏi giảm giá này',
+          });
+          setReload(1);
+        }
+        if (data === 0) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Thất bại',
+            desc: 'Xóa sản phẩm khỏi giảm giá này thất bại',
+          });
+        }
+      })
+      .catch((error) =>
+        openNotificationWithIcon({
+          type: 'error',
+          message: 'Xóa sản phẩm khỏi giảm giá này thất bại',
+          desc: error,
+        })
+      );
+  };
   return (
     <div>
       {dataDiscount !== null && (
@@ -202,6 +244,20 @@ const AddToProduct = () => {
                       <div className="card-addtoproduct_name">
                         <p>{item.nameProduct}</p>
                       </div>
+                      <ButtonCustom style={{ padding: '0' }}>
+                        <Popconfirm
+                          title="Bạn muốn xóa?"
+                          onConfirm={() =>
+                            removeProdHandler({ idProduct: item.idProduct })
+                          }
+                        >
+                          <FontAwesomeIcon
+                            icon={faTrashAlt}
+                            size="1x"
+                            style={{ opacity: '0.8' }}
+                          />
+                        </Popconfirm>
+                      </ButtonCustom>
                     </div>
                   </Card.Grid>
                 ))}

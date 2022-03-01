@@ -28,9 +28,13 @@
 .wapper-card-addtoproduct {
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 .card-addtoproduct_name {
   margin-left: 6px;
+}
+.card-addtoproduct_name p {
+  font-size: 1.3rem;
 }
 .card-addtoproduct_price {
   margin-left: 10px;
