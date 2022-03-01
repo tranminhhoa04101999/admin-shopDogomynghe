@@ -101,7 +101,7 @@ const EditDiscount = () => {
         })
       );
   };
-
+  console.log('percent', dataDiscount.percent);
   return (
     <div className="wrap-adddiscount">
       <div className="wrap-adddiscount__item">
@@ -120,7 +120,7 @@ const EditDiscount = () => {
         <Space style={{ display: 'flex', justifyContent: 'center', margin: '10px 0' }}>
           <span style={{ fontSize: '1.4rem' }}>Chọn phần trăm giảm giá: </span>
           <InputNumber
-            defaultValue={0}
+            value={dataDiscount.percent * 100}
             min={0}
             max={100}
             size="middle"

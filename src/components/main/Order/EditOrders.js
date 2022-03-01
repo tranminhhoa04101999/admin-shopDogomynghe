@@ -5,17 +5,27 @@ import { LINKCONECT_BASE, LINKIMG_BASE } from '../../../App';
 import './EditOrders.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch, faLongArrowAltRight } from '@fortawesome/free-solid-svg-icons';
-import { Select, Button } from 'antd';
+import { Select, Button, notification } from 'antd';
+import moment from 'moment';
 
 const EditOrders = () => {
   const { state } = useLocation();
   const [dataOrderFull, setDataOrderFull] = useState(null);
   const [idStatusNew, setIdStatusNew] = useState(0);
   const [dataStatus, setDataStatus] = useState([]);
+  const [idEmployee, setIdEmployee] = useState(0);
+  const [reload, setReload] = useState(0);
+  const accountLogined = JSON.parse(localStorage.getItem('infoAccountLogined'));
 
   const { Option } = Select;
   const navigate = useNavigate();
 
+  const openNotificationWithIcon = (props) => {
+    notification[props.type]({
+      message: props.message,
+      description: props.desc,
+    });
+  };
   useEffect(() => {
     if (state === null) {
       navigate('/orders');
@@ -32,7 +42,24 @@ const EditOrders = () => {
     fetch(`${LINKCONECT_BASE}/allstatus`)
       .then((response) => response.json())
       .then((data) => setDataStatus(data));
+    //lấy ra id Employee
+    fetch(
+      `${LINKCONECT_BASE}/employeeFindByIdAccount?idAccount=${accountLogined.idAccount}`
+    )
+      .then((response) => response.json())
+      .then((data) => setIdEmployee(data[0].idEmployee));
   }, []);
+
+  useEffect(() => {
+    fetch(
+      `${LINKCONECT_BASE}/searchOrderByIdOrPhone?idStatus=6&idOrders=${state.idOrder}&phone=0`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setDataOrderFull(data[0]);
+        setIdStatusNew(data[0].orders.status.idStatus);
+      });
+  }, [reload]);
 
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -43,6 +70,36 @@ const EditOrders = () => {
     setIdStatusNew(value);
   };
 
+  const btnSelectOnClickHandler = () => {
+    fetch(
+      `${LINKCONECT_BASE}/UpdateStatusByidStatusAndId?idStatus=${idStatusNew}&idOrders=${state.idOrder}&idEmployee=${idEmployee}`,
+      {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+          Accepts: '*/*',
+
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data === 1) {
+          openNotificationWithIcon({
+            type: 'success',
+            message: 'Thay đổi trạng thái thành công',
+            desc: '',
+          });
+          setReload(Math.random());
+        }
+      });
+  };
   return (
     <div>
       {dataOrderFull !== null && (
@@ -69,20 +126,45 @@ const EditOrders = () => {
                     <div className="searchOrder-Status__title">
                       {dataOrderFull.orders.status.statusName}
                     </div>
-                    <FontAwesomeIcon icon={faLongArrowAltRight} size="2x" />
+                    {dataOrderFull.orders.status.idStatus < 5 && (
+                      <FontAwesomeIcon icon={faLongArrowAltRight} size="2x" />
+                    )}
 
-                    <Select
-                      value={idStatusNew}
-                      style={{ width: 120, margin: '0 10px ' }}
-                      onChange={selectStatusHandler}
-                    >
-                      {dataStatus.map((itemS, index) => (
-                        <Option key={index} value={itemS.idStatus}>
-                          {itemS.statusName}
-                        </Option>
-                      ))}
-                    </Select>
-                    <Button>Chuyển</Button>
+                    {dataOrderFull.orders.status.idStatus < 5 && (
+                      <Select
+                        value={idStatusNew}
+                        style={{ width: 120, margin: '0 10px ' }}
+                        onChange={selectStatusHandler}
+                      >
+                        {dataStatus.map((itemS, index) => (
+                          <Option key={index} value={itemS.idStatus}>
+                            {itemS.statusName}
+                          </Option>
+                        ))}
+                      </Select>
+                    )}
+
+                    {dataOrderFull.orders.status.idStatus < 5 && (
+                      <Button onClick={() => btnSelectOnClickHandler()}>Chuyển</Button>
+                    )}
+                  </div>
+                  <div className="searchOrder-Status__total">
+                    {dataOrderFull.orders.employee !== null ? (
+                      <div>Nhân viên chỉnh sửa:</div>
+                    ) : (
+                      ''
+                    )}
+                    <span>
+                      {dataOrderFull.orders.employee !== null
+                        ? dataOrderFull.orders.employee.name
+                        : ''}
+                    </span>
+                    ngày
+                    <span>
+                      {dataOrderFull.orders.dateEnd === null
+                        ? moment(dataOrderFull.orders.dateModified).format('DD/MM/YYYY')
+                        : moment(dataOrderFull.orders.dateEnd).format('DD/MM/YYYY')}
+                    </span>
                   </div>
                   <div className="searchOrder-Status__total">
                     Tổng tiền đơn hàng:{' '}

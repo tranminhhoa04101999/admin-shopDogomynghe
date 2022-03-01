@@ -7,8 +7,9 @@ import { useEffect } from 'react';
 
 const Discount = () => {
   const navigate = useNavigate();
+  const data = JSON.parse(localStorage.getItem('infoAccountLogined'));
+
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem('infoAccountLogined'));
     if (data === null || data === undefined) {
       navigate('/authenticate');
     } else {
@@ -21,9 +22,11 @@ const Discount = () => {
         <div className="header-discount__btn">
           <NavLinkCustom to="showdiscount" title="Hiển thị" iconName={faTabletAlt} />
         </div>
-        <div className="header-discount__btn">
-          <NavLinkCustom to="adddiscount" title="thêm" iconName={faPlus} />
-        </div>
+        {data.role.idRole === 1 && (
+          <div className="header-discount__btn">
+            <NavLinkCustom to="adddiscount" title="thêm" iconName={faPlus} />
+          </div>
+        )}
       </div>
       <div>
         <Outlet />

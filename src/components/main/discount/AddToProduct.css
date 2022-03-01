@@ -1,0 +1,37 @@
+.container-addtoproduct {
+}
+.addtoproduct__card {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.addtoproduct__card span {
+  font-size: 1.4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.addtoproduct__card span p {
+  font-size: 1.4rem;
+  color: var(--primary-color-red);
+  margin-left: 6px;
+  margin-bottom: 0;
+}
+.container-select {
+  width: 1600px;
+  display: flex;
+  align-items: center;
+}
+.container-select span {
+}
+
+.wapper-card-addtoproduct {
+  display: flex;
+  align-items: center;
+}
+.card-addtoproduct_name {
+  margin-left: 6px;
+}
+.card-addtoproduct_price {
+  margin-left: 10px;
+}

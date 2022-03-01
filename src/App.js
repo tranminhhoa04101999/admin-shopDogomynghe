@@ -26,6 +26,7 @@ import ChangePassword from './components/main/auth/ChangePassword';
 import Orders from './components/main/Order/Orders';
 import ShowOrders from './components/main/Order/ShowOrders';
 import EditOrders from './components/main/Order/EditOrders';
+import AddToProduct from './components/main/discount/AddToProduct';
 
 export const LINKCONECT_BASE = 'http://localhost:8080';
 export const LINKIMG_BASE =
@@ -58,6 +59,7 @@ function App() {
           <Route path="showdiscount" element={<ShowDiscount />} />
           <Route path="editdiscount" element={<EditDiscount />} />
           <Route path="adddiscount" element={<AddDiscount />} />
+          <Route path="addToProduct" element={<AddToProduct />} />
         </Route>
         <Route path="/infomation" element={<Infomation />}>
           <Route path="showInfomation" element={<ShowInfomation />} />

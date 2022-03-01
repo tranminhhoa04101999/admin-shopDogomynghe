@@ -3,7 +3,7 @@ import './ShowDiscount.css';
 import ButtonCustom from '../../base/ButtonCustom';
 import { Table, notification, Popconfirm } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrashAlt, faClipboardCheck } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { LINKCONECT_BASE } from '../../../App';
@@ -11,6 +11,7 @@ import { LINKCONECT_BASE } from '../../../App';
 const ShowDiscount = () => {
   const navigate = useNavigate();
   const [dataTable, setDataTable] = useState([]);
+  const [reload, setReload] = useState(0);
   const [dataDiscount, setDataDiscount] = useState([]);
   const openNotificationWithIcon = (props) => {
     notification[props.type]({
@@ -125,6 +126,15 @@ const ShowDiscount = () => {
       );
     window.location.reload(false);
   };
+  const addToProductHandler = (props) => {
+    if (props.data.isActive === 0) {
+      openNotificationWithIcon({
+        type: 'warning',
+        message: 'Không thể áp dụng discount!',
+        desc: 'Discount đang dừng áp dụng.',
+      });
+    } else navigate('/discount/addToProduct', { state: { data: props.data } });
+  };
 
   const actionBtn = (props) => {
     return (
@@ -137,12 +147,20 @@ const ShowDiscount = () => {
             <FontAwesomeIcon icon={faEdit} />
           </Popconfirm>
         </ButtonCustom>
-        <ButtonCustom style={{ padding: 0 }}>
+        <ButtonCustom style={{ padding: 0, marginRight: '10px' }}>
           <Popconfirm
             title="Bạn muốn xóa?"
             onConfirm={() => removeHandler({ data: props.data })}
           >
             <FontAwesomeIcon icon={faTrashAlt} />
+          </Popconfirm>
+        </ButtonCustom>
+        <ButtonCustom style={{ padding: 0 }}>
+          <Popconfirm
+            title="Bạn muốn áp dụng?"
+            onConfirm={() => addToProductHandler({ data: props.data })}
+          >
+            <FontAwesomeIcon icon={faClipboardCheck} />
           </Popconfirm>
         </ButtonCustom>
       </div>

@@ -3,9 +3,10 @@ import './ShowOrders.css';
 import ButtonCustom from '../../base/ButtonCustom';
 import { Table, notification, Popconfirm, Image, Card, Input, Space, Button } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { SearchOutlined } from '@ant-design/icons';
 import { LINKCONECT_BASE, LINKIMG_BASE } from '../../../App';
 import moment from 'moment';
 
@@ -98,6 +99,52 @@ const ShowOrders = () => {
     {
       title: 'SĐT',
       dataIndex: 'phone',
+      filterSearch: true,
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => {
+        return (
+          <div style={{ width: '200px' }}>
+            <Input
+              onPressEnter={() => {
+                confirm();
+              }}
+              onBlur={() => {
+                confirm();
+              }}
+              value={selectedKeys[0]}
+              onChange={(e) => {
+                setSelectedKeys(e.target.value ? [e.target.value] : []);
+              }}
+              autoFocus
+              placeholder="Nhập sđt cần tìm"
+            />
+            <Space>
+              <Button
+                type="primary"
+                onClick={() => confirm()}
+                icon={<SearchOutlined />}
+                size="small"
+                style={{ width: 90 }}
+              >
+                Search
+              </Button>
+              <Button
+                onClick={() => {
+                  clearFilters();
+                  confirm();
+                }}
+                size="small"
+                style={{ width: 90 }}
+              >
+                Reset
+              </Button>
+            </Space>
+          </div>
+        );
+      },
+      filterIcon: <SearchOutlined />,
+      onFilter: (value, record) => {
+        return record.phone.toLowerCase().includes(value.toLowerCase());
+      },
     },
     {
       title: 'Địa chỉ giao hàng',

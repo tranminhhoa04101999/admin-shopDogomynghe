@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './AddDiscount.css';
 import InputCustom from '../../base/InputCustom';
 import { useState } from 'react';
@@ -9,6 +9,7 @@ import { notification, InputNumber, Space } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 const AddDiscount = () => {
+  const datalogin = JSON.parse(localStorage.getItem('infoAccountLogined'));
   const [dataDiscount, setDataDiscount] = useState({
     nameDiscount: '',
     descDiscount: '',
@@ -18,6 +19,12 @@ const AddDiscount = () => {
     isActive: 1,
   });
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (datalogin.role.idRole !== 1) {
+      navigate('/discount');
+    }
+  }, []);
 
   const openNotificationWithIcon = (props) => {
     notification[props.type]({
