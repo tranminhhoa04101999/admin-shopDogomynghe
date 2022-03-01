@@ -1,0 +1,10 @@
+.wapper-card-showorder {
+  display: flex;
+  align-items: center;
+}
+.card-showorder_name {
+  margin-left: 6px;
+}
+.card-showorder_price {
+  margin-left: 10px;
+}

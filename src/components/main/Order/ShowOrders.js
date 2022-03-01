@@ -1,4 +1,5 @@
 import React from 'react';
+import './ShowOrders.css';
 import ButtonCustom from '../../base/ButtonCustom';
 import { Table, notification, Popconfirm, Image, Card, Input, Space, Button } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,16 +9,23 @@ import { useState, useEffect } from 'react';
 import { LINKCONECT_BASE, LINKIMG_BASE } from '../../../App';
 import moment from 'moment';
 
+const gridStyle = {
+  width: 'calc(100% /3 )',
+  textAlign: 'center',
+  padding: '10px',
+};
+
 const ShowOrders = () => {
   const [dataTable, setDataTable] = useState([]);
   const [dataOrders, setDataOrders] = useState([]);
-  const [dataOrderExpan, setDataOrderExpan] = useState([]);
+  const [dataOrderExpan, setDataOrderExpan] = useState(null);
   const openNotificationWithIcon = (props) => {
     notification[props.type]({
       message: props.message,
       description: props.desc,
     });
   };
+  const navigate = useNavigate();
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'VND',
@@ -34,6 +42,7 @@ const ShowOrders = () => {
               key: item.idOrder,
               idOrder: item.idOrder,
               phone: item.phone,
+              name: item.customer.name,
               address: item.address,
               note: item.note,
               total: item.total,
@@ -50,17 +59,19 @@ const ShowOrders = () => {
     };
   }, []);
 
+  const EditActionHandler = (props) => {
+    navigate('/orders/editorders', { state: { idOrder: props.idOrder } });
+  };
+
   const actionBtn = (props) => {
     return (
       <div className="wraper-action">
         <ButtonCustom style={{ marginRight: '10px', padding: 0 }}>
-          <Popconfirm title="bạn muốn sửa?" onConfirm={() => {}}>
+          <Popconfirm
+            title="bạn muốn sửa?"
+            onConfirm={() => EditActionHandler({ idOrder: props.idOrder })}
+          >
             <FontAwesomeIcon icon={faEdit} />
-          </Popconfirm>
-        </ButtonCustom>
-        <ButtonCustom style={{ padding: 0 }}>
-          <Popconfirm title="Bạn muốn xóa?" onConfirm={() => {}}>
-            <FontAwesomeIcon icon={faTrashAlt} />
           </Popconfirm>
         </ButtonCustom>
       </div>
@@ -71,7 +82,7 @@ const ShowOrders = () => {
       `${LINKCONECT_BASE}/searchOrderByIdOrPhone?idStatus=6&idOrders=${props.idOrder}&phone=0`
     )
       .then((response) => response.json())
-      .then((data) => setDataOrderExpan(data));
+      .then((data) => setDataOrderExpan(data[0]));
   };
 
   const columns = [
@@ -82,6 +93,10 @@ const ShowOrders = () => {
 
     {
       title: 'Tên',
+      dataIndex: 'name',
+    },
+    {
+      title: 'SĐT',
       dataIndex: 'phone',
     },
     {
@@ -120,18 +135,47 @@ const ShowOrders = () => {
     {
       title: 'Thao tác',
       dataIndex: 'action',
-      render: (_, record) => actionBtn(),
-      width: '8%',
+      render: (_, record) => actionBtn({ idOrder: record.idOrder }),
+      width: '5%',
     },
   ];
+
   return (
     <Table
       columns={columns}
       dataSource={dataTable}
       expandable={{
         expandedRowRender: (record) => {
-          if (dataOrderExpan.length > 0)
-            return <div>{dataOrderExpan[0].orders.phone}</div>;
+          if (dataOrderExpan !== null)
+            return (
+              <div>
+                <Card>
+                  {dataOrderExpan.productSearchResponses.map((item, index) => (
+                    <Card.Grid key={index} style={gridStyle}>
+                      <div className="wapper-card-showorder">
+                        <Image
+                          width={50}
+                          height={50}
+                          src={`${LINKIMG_BASE}${item.imgURL}.jpg?alt=media`}
+                        />
+                        <div className="card-showorder_name">
+                          <p>{item.nameProduct}</p>
+                          <p>x{item.quantity}</p>
+                        </div>
+                        <div className="card-showorder_price">
+                          <div className="cart-table__wrap-price-old">
+                            {formatter.format(item.price)}
+                          </div>
+                          <div className="cart-table__wrap-price-total">
+                            Tổng tiền: {formatter.format(item.price * item.quantity)}
+                          </div>
+                        </div>
+                      </div>
+                    </Card.Grid>
+                  ))}
+                </Card>
+              </div>
+            );
         },
         rowExpandable: (record) => record.name !== 'Not Expandable',
 

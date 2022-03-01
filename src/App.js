@@ -25,6 +25,7 @@ import ShowInfomation from './components/main/auth/ShowInfomation';
 import ChangePassword from './components/main/auth/ChangePassword';
 import Orders from './components/main/Order/Orders';
 import ShowOrders from './components/main/Order/ShowOrders';
+import EditOrders from './components/main/Order/EditOrders';
 
 export const LINKCONECT_BASE = 'http://localhost:8080';
 export const LINKIMG_BASE =
@@ -64,6 +65,7 @@ function App() {
         </Route>
         <Route path="/orders" element={<Orders />}>
           <Route path="showorders" element={<ShowOrders />} />
+          <Route path="editorders" element={<EditOrders />} />
         </Route>
         <Route path="*" element={<Authenticate to="/authenticate" replace />} />
       </Routes>
