@@ -1,10 +1,22 @@
 .wapper-card-showorder {
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 .card-showorder_name {
   margin-left: 6px;
 }
 .card-showorder_price {
   margin-left: 10px;
+  float: right;
+}
+.card-showorder_name p {
+  font-size: 1.4rem;
+  text-align: left;
+}
+.card-showorder_price-old {
+  font-size: 1.4rem;
+}
+.card-showorder__leftexpan {
+  display: flex;
 }

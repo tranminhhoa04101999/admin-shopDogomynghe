@@ -19,6 +19,8 @@ const gridStyle = {
 const ShowOrders = () => {
   const [dataTable, setDataTable] = useState([]);
   const [dataOrders, setDataOrders] = useState([]);
+  const [expaned, setExpaned] = useState([]);
+
   const [dataOrderExpan, setDataOrderExpan] = useState(null);
   const openNotificationWithIcon = (props) => {
     notification[props.type]({
@@ -178,6 +180,35 @@ const ShowOrders = () => {
     {
       title: 'Trạng thái',
       dataIndex: 'statusName',
+      filters: [
+        {
+          text: 'Đang đợi xử lý',
+          value: 'Đang đợi xử lý',
+        },
+        {
+          text: 'Đã tiếp nhận',
+          value: 'Đã tiếp nhận',
+        },
+        {
+          text: 'Chờ thanh toán',
+          value: 'Chờ thanh toán',
+        },
+        {
+          text: 'Đang giao',
+          value: 'Đang giao',
+        },
+        {
+          text: 'Đã giao',
+          value: 'Đã giao',
+        },
+        {
+          text: 'Đã hủy',
+          value: 'Đã hủy',
+        },
+      ],
+
+      onFilter: (value, record) => record.statusName.indexOf(value) === 0,
+      sortDirections: ['descend'],
     },
     {
       title: 'Thao tác',
@@ -200,21 +231,20 @@ const ShowOrders = () => {
                   {dataOrderExpan.productSearchResponses.map((item, index) => (
                     <Card.Grid key={index} style={gridStyle}>
                       <div className="wapper-card-showorder">
-                        <Image
-                          width={50}
-                          height={50}
-                          src={`${LINKIMG_BASE}${item.imgURL}.jpg?alt=media`}
-                        />
-                        <div className="card-showorder_name">
-                          <p>{item.nameProduct}</p>
-                          <p>x{item.quantity}</p>
+                        <div className="card-showorder__leftexpan">
+                          <Image
+                            width={50}
+                            height={50}
+                            src={`${LINKIMG_BASE}${item.imgURL}.jpg?alt=media`}
+                          />
+                          <div className="card-showorder_name">
+                            <p>{item.nameProduct}</p>
+                            <p>x{item.quantity}</p>
+                          </div>
                         </div>
                         <div className="card-showorder_price">
-                          <div className="cart-table__wrap-price-old">
+                          <div className="card-showorder_price-old">
                             {formatter.format(item.price)}
-                          </div>
-                          <div className="cart-table__wrap-price-total">
-                            Tổng tiền: {formatter.format(item.price * item.quantity)}
                           </div>
                         </div>
                       </div>
@@ -229,9 +259,13 @@ const ShowOrders = () => {
         onExpand: (expanded, record) => {
           if (expanded) {
             expanHandler({ idOrder: record.idOrder });
+            setExpaned([record.idOrder]);
+          } else {
+            setExpaned([]);
           }
         },
       }}
+      expandedRowKeys={expaned}
     />
   );
 };

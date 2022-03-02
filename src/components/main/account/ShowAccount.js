@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 const ShowAccount = () => {
   const [dataAccount, setDataAccount] = useState([]);
   const [dataTable, setDataTable] = useState([]);
+  const [reload, setReload] = useState(0);
   const navigate = useNavigate();
 
   const openNotificationWithIcon = (props) => {
@@ -81,7 +82,7 @@ const ShowAccount = () => {
                 setSelectedKeys(e.target.value ? [e.target.value] : []);
               }}
               autoFocus
-              placeholder="Nhập id cần tìm"
+              placeholder="Nhập email cần tìm"
             />
             <Space>
               <Button
@@ -148,12 +149,22 @@ const ShowAccount = () => {
       redirect: 'follow',
       referrerPolicy: 'no-referrer',
     })
+      .then((response) => response.json())
       .then((data) => {
-        openNotificationWithIcon({
-          type: 'success',
-          message: 'Xóa tài khoản thành công',
-          desc: props.idAccount,
-        });
+        if (data === 1) {
+          openNotificationWithIcon({
+            type: 'success',
+            message: 'Xóa tài khoản thành công',
+            desc: props.idAccount,
+          });
+          window.location.reload(false);
+        } else if (data === 0) {
+          openNotificationWithIcon({
+            type: 'warning',
+            message: 'Tài khoản này đã có dữ liệu',
+            desc: 'Không thể xóa chỉ có thể thiết lập hoạt động.',
+          });
+        }
       })
       .catch((error) => {
         openNotificationWithIcon({
@@ -163,7 +174,6 @@ const ShowAccount = () => {
         });
       });
     //xóa thành công tự ra reload
-    window.location.reload(false);
   };
   const editAccountHandler = (props) => {
     navigate('/account/editAccount', { state: { idAccount: props.idAccount } });
@@ -179,14 +189,14 @@ const ShowAccount = () => {
             <FontAwesomeIcon icon={faEdit} />
           </Popconfirm>
         </ButtonCustom>
-        <ButtonCustom style={{ padding: 0 }}>
+        {/* <ButtonCustom style={{ padding: 0 }}>
           <Popconfirm
             title="Bạn muốn xóa?"
             onConfirm={() => removeAccountHandler({ idAccount: props.idAccount })}
           >
             <FontAwesomeIcon icon={faTrashAlt} />
           </Popconfirm>
-        </ButtonCustom>
+        </ButtonCustom> */}
       </div>
     );
   };

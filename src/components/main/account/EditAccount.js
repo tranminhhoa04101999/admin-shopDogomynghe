@@ -150,12 +150,16 @@ const EditAccount = () => {
             value={dataAccount.role.idRole}
             style={{ width: 200 }}
             onChange={handleSelectChange}
+            disabled={dataAccount.role.idRole === 3}
           >
-            {allRole.map((item) => (
-              <Option key={item.idRole} value={item.idRole}>
-                {item.roleName}
-              </Option>
-            ))}
+            {allRole.map(
+              (item) =>
+                item.idRole < 3 && (
+                  <Option key={item.idRole} value={item.idRole}>
+                    {item.roleName}
+                  </Option>
+                )
+            )}
           </Select>
         </div>
 

@@ -90,7 +90,7 @@ const AddAccount = () => {
       });
       return;
     }
-    fetch(`${LINKCONECT_BASE}/addAccount`, {
+    fetch(`${LINKCONECT_BASE}/addAccountAdmin`, {
       method: 'POST',
       mode: 'cors',
       cache: 'no-cache',
