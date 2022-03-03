@@ -115,6 +115,13 @@ const EditProduct = () => {
         desc: 'Vui lòng nhập màu sản phẩm',
       });
       return;
+    } else if (dataProd.quantity < 0) {
+      openNotificationWithIcon({
+        type: 'warning',
+        message: 'Lỗi số lượng',
+        desc: 'Số lượng không thể nhỏ hơn 0',
+      });
+      return;
     }
     // sửa product
     await fetch(LINKCONECT_BASE + '/addproduct', {

@@ -14,6 +14,7 @@ import moment from 'moment';
 const ShowProduct = () => {
   const [dataProd, setDataProd] = useState([]);
   const [dataTable, setDataTable] = useState([]);
+  const [expaned, setExpaned] = useState([]);
   const [imgProd, setImgProd] = useState([
     {
       idImgProduct: 0,
@@ -24,85 +25,97 @@ const ShowProduct = () => {
 
   const removeHandler = async (props) => {
     const idProd = props.id;
-    // xóa cả ảnh liên quan database
-    await fetch(LINKCONECT_BASE + `/deleteImgByIdProduct?idProduct=${idProd}`, {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        // 'Content-Type': 'application/json',
-        Accepts: '*/*',
-
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      redirect: 'follow',
-      referrerPolicy: 'no-referrer',
-    })
-      .then((response) => response)
-      .then((data) => {
-        // xóa thành công reload component
-        // window.location.reload(false);
-      })
-      .catch((error) => {
-        openNotificationWithIcon({
-          type: 'error',
-          message: 'Xóa imgproduc thất bại',
-          desc: error,
-        });
-      });
-    // xoa prodcut database
-    await fetch(LINKCONECT_BASE + `/deleteproduct?idProd=${idProd}`, {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        // 'Content-Type': 'application/json',
-        Accepts: '*/*',
-
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      redirect: 'follow',
-      referrerPolicy: 'no-referrer',
-    })
-      .then((response) => response)
-      .then((data) => {
-        openNotificationWithIcon({
-          type: 'success',
-          message: 'Xóa thành công',
-          desc: 'Id: ' + idProd,
-        });
-      })
-      .catch((error) => {
-        openNotificationWithIcon({
-          type: 'error',
-          message: 'Xóa thất bại',
-          desc: error,
-        });
-        return;
-      });
-    var dataImgRemove = [];
-    // xóa cả ảnh liên quan firebase
-    // lay ra imgremove theo idprodc
-    await fetch(`http://localhost:8080/imgproductwith?idProduct=${idProd}`)
+    let checkHaveOrdersItem = -1;
+    await fetch(`${LINKCONECT_BASE}/checkProductHaveOrderItems?idProduct=${idProd}`)
       .then((response) => response.json())
-      .then((data) => (dataImgRemove = data));
-    console.log('dataImgRemove', dataImgRemove);
-    if (dataImgRemove.length !== 0) {
-      dataImgRemove.map((item) => {
-        const desertRef = ref(storage, `images/${item.imgURL}.jpg`);
-        deleteObject(desertRef)
-          .then(() => {
-            console.log('xoa anh thanh cong');
-          })
-          .catch((error) => {
-            console.log('xoa anh that bai');
-            // Uh-oh, an error occurred!
+      .then((data) => (checkHaveOrdersItem = data));
+    // xóa cả ảnh liên quan database
+    if (checkHaveOrdersItem === 0) {
+      await fetch(LINKCONECT_BASE + `/deleteImgByIdProduct?idProduct=${idProd}`, {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          // 'Content-Type': 'application/json',
+          Accepts: '*/*',
+
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+      })
+        .then((response) => response)
+        .then((data) => {
+          // xóa thành công reload component
+          // window.location.reload(false);
+        })
+        .catch((error) => {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xóa imgproduc thất bại',
+            desc: error,
           });
+        });
+      // xoa prodcut database
+      await fetch(LINKCONECT_BASE + `/deleteproduct?idProd=${idProd}`, {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          // 'Content-Type': 'application/json',
+          Accepts: '*/*',
+
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+      })
+        .then((response) => response)
+        .then((data) => {
+          openNotificationWithIcon({
+            type: 'success',
+            message: 'Xóa thành công',
+            desc: 'Id: ' + idProd,
+          });
+        })
+        .catch((error) => {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xóa thất bại',
+            desc: error,
+          });
+          return;
+        });
+      var dataImgRemove = [];
+      // xóa cả ảnh liên quan firebase
+      // lay ra imgremove theo idprodc
+      await fetch(`http://localhost:8080/imgproductwith?idProduct=${idProd}`)
+        .then((response) => response.json())
+        .then((data) => (dataImgRemove = data));
+      console.log('dataImgRemove', dataImgRemove);
+      if (dataImgRemove.length !== 0) {
+        dataImgRemove.map((item) => {
+          const desertRef = ref(storage, `images/${item.imgURL}.jpg`);
+          deleteObject(desertRef)
+            .then(() => {
+              console.log('xoa anh thanh cong');
+            })
+            .catch((error) => {
+              console.log('xoa anh that bai');
+              // Uh-oh, an error occurred!
+            });
+        });
+      }
+      window.location.reload(false);
+    } else {
+      openNotificationWithIcon({
+        type: 'warning',
+        message: 'Xóa thất bại',
+        desc: 'Sản phẩm này đã được đặt hàng! chỉ được set active',
       });
     }
-    window.location.reload(false);
   };
 
   const editHandler = (props) => {
@@ -331,7 +344,15 @@ const ShowProduct = () => {
           </div>
         ),
         rowExpandable: (record) => record.name !== 'Not Expandable',
+        onExpand: (expanded, record) => {
+          if (expanded) {
+            setExpaned([record.key]);
+          } else {
+            setExpaned([]);
+          }
+        },
       }}
+      expandedRowKeys={expaned}
     />
   );
 };
