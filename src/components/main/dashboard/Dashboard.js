@@ -126,7 +126,7 @@ const Dashboard = (props) => {
       navigate('/login');
     } else {
       if (data.role.idRole === 2) {
-        navigate('/product');
+        navigate('/products');
       } else {
         // navigate('/');
       }

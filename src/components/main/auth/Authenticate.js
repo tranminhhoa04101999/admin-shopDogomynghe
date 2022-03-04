@@ -1,16 +1,17 @@
-import React from "react";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Authenticate = (props) => {
   const navigate = useNavigate();
-  const data = JSON.parse(localStorage.getItem("infoAccountLogined"));
+  const data = JSON.parse(localStorage.getItem('infoAccountLogined'));
 
   useEffect(() => {
     if (data === null || data === undefined) {
-      navigate("/login");
+      navigate('/login');
     } else {
-      navigate("/dashboard");
+      // navigate('/');
+      navigate('/dashboard');
     }
   }, []);
 
