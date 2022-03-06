@@ -22,7 +22,9 @@ const AddToProduct = () => {
   const [dataDiscount, setDataDiscount] = useState(null);
   const navigate = useNavigate();
   const [options, setOptions] = useState([]);
+  const [optionsCate, setOptionsCate] = useState([]);
   const [listIdProduct, setListIdProduct] = useState([]);
+  const [listIdCate, setListIdCate] = useState([]);
   const [listProduct, setListProduct] = useState([]);
   const [reload, setReload] = useState(0);
 
@@ -38,6 +40,19 @@ const AddToProduct = () => {
               {
                 value: item.idProduct,
                 label: 'ID: ' + item.idProduct + ' ' + item.nameProduct,
+              },
+            ])
+          );
+        });
+      fetch(`${LINKCONECT_BASE}/allcategory`)
+        .then((response) => response.json())
+        .then((data) => {
+          data.map((item) =>
+            setOptionsCate((prev) => [
+              ...prev,
+              {
+                value: item.idCategory,
+                label: 'ID: ' + item.idCategory + ' ' + item.name,
               },
             ])
           );
@@ -95,6 +110,10 @@ const AddToProduct = () => {
   const selectProdOnchangeHandler = (value) => {
     setListIdProduct(value);
   };
+  const selectCateOnchangeHandler = (value) => {
+    setListIdCate(value);
+  };
+
   const btnOnlickHandler = () => {
     if (listIdProduct.length === 0) {
       openNotificationWithIcon({
@@ -146,6 +165,58 @@ const AddToProduct = () => {
         );
     }
   };
+  const btnCateOnClick = () => {
+    if (listIdCate.length === 0) {
+      openNotificationWithIcon({
+        type: 'warning',
+        message: 'Bạn chưa chọn sản phẩm để áp dụng',
+        desc: 'Chọn đi nào',
+      });
+    } else {
+      fetch(
+        `${LINKCONECT_BASE}/updateDiscountWithListIdCate?idDiscount=${dataDiscount.idDiscount}`,
+        {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+            'Content-Type': 'application/json',
+            Accepts: '*/*',
+
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          redirect: 'follow',
+          referrerPolicy: 'no-referrer',
+          body: JSON.stringify(listIdCate),
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          if (data === 1) {
+            openNotificationWithIcon({
+              type: 'success',
+              message: 'Thành công',
+              desc: 'Áp dụng giảm giá thành công',
+            });
+            setReload(1);
+          }
+          if (data === 0) {
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Thất bại',
+              desc: 'Áp dụng thất bại',
+            });
+          }
+        })
+        .catch((error) =>
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Áp dụng thất bại',
+            desc: error,
+          })
+        );
+    }
+  };
+
   const removeProdHandler = (props) => {
     fetch(`${LINKCONECT_BASE}/RemoveByIdProduct?idProduct=${props.idProduct}`, {
       method: 'POST',
@@ -166,6 +237,47 @@ const AddToProduct = () => {
             type: 'success',
             message: 'Thành công',
             desc: 'Xóa sản phẩm ' + props.idProduct + ' khỏi giảm giá này',
+          });
+          setReload(1);
+        }
+        if (data === 0) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Thất bại',
+            desc: 'Xóa sản phẩm khỏi giảm giá này thất bại',
+          });
+        }
+      })
+      .catch((error) =>
+        openNotificationWithIcon({
+          type: 'error',
+          message: 'Xóa sản phẩm khỏi giảm giá này thất bại',
+          desc: error,
+        })
+      );
+  };
+
+  const btnRemoveCateOnClick = () => {
+    fetch(`${LINKCONECT_BASE}/updateDiscountNullByListIdCate`, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        Accepts: '*/*',
+
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify(listIdCate),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data === 1) {
+          openNotificationWithIcon({
+            type: 'success',
+            message: 'Thành công',
+            desc: 'Xóa sản phẩm khỏi giảm giá này',
           });
           setReload(1);
         }
@@ -220,6 +332,29 @@ const AddToProduct = () => {
                 <Button style={{ margin: '0 10px' }} onClick={() => btnOnlickHandler()}>
                   Áp dụng
                 </Button>
+              </div>
+            </Card.Grid>
+            <Card.Grid style={{ ...gridStyle, marginBottom: '20px' }}>
+              <div className="container-select">
+                <span>Chọn Category để áp dụng: </span>
+                <Select
+                  mode="multiple"
+                  showArrow
+                  tagRender={tagRender}
+                  style={{ width: '100%' }}
+                  options={optionsCate}
+                  onChange={selectCateOnchangeHandler}
+                />
+                <Button style={{ margin: '0 10px' }} onClick={() => btnCateOnClick()}>
+                  Áp dụng
+                </Button>
+
+                <Popconfirm
+                  title="Bạn muốn Bỏ áp dụng?"
+                  onConfirm={() => btnRemoveCateOnClick()}
+                >
+                  <Button style={{ margin: '0 10px' }}>Bỏ áp dụng</Button>
+                </Popconfirm>
               </div>
             </Card.Grid>
             {listProduct.length > 0 && (

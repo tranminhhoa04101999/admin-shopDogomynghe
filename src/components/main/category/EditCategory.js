@@ -138,7 +138,7 @@ const EditCategory = () => {
     var dataAdd = dataCategory;
     dataAdd.imgURL = imgURLupdate;
 
-    fetch(`${LINKCONECT_BASE}/saveCategory`, {
+    fetch(`${LINKCONECT_BASE}/updateCategory`, {
       method: 'POST',
       mode: 'cors',
       headers: {

@@ -65,6 +65,26 @@ const ButtonUploadImg = (props) => {
             (data) => {} //console.log(data)
           );
       }
+    } else {
+      fetch(
+        `http://localhost:8080/saveimageproduct?imgURL=${'defaultImage'}&idProduct=${
+          props.idMaxProduct
+        }`,
+        {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+            'Content-Type': 'application/json',
+            Accepts: '*/*',
+
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        }
+      )
+        .then((response) => response)
+        .then(
+          (data) => {} //console.log(data)
+        );
     }
   };
 

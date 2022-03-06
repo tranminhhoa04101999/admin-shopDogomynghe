@@ -40,7 +40,10 @@ const AddProduct = () => {
     //lấy category all
     fetch(`${LINKCONECT_BASE}/allcategory`)
       .then((response) => response.json())
-      .then((data) => setDataCategory(data));
+      .then((data) => {
+        setDataCategory(data);
+        setDataProd((prev) => ({ ...prev, category: data[0] }));
+      });
   }, []);
 
   const openNotificationWithIcon = (props) => {

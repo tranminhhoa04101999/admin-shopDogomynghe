@@ -97,15 +97,17 @@ const ShowProduct = () => {
       console.log('dataImgRemove', dataImgRemove);
       if (dataImgRemove.length !== 0) {
         dataImgRemove.map((item) => {
-          const desertRef = ref(storage, `images/${item.imgURL}.jpg`);
-          deleteObject(desertRef)
-            .then(() => {
-              console.log('xoa anh thanh cong');
-            })
-            .catch((error) => {
-              console.log('xoa anh that bai');
-              // Uh-oh, an error occurred!
-            });
+          if (item.imgURL !== 'defaultImage') {
+            const desertRef = ref(storage, `images/${item.imgURL}.jpg`);
+            deleteObject(desertRef)
+              .then(() => {
+                console.log('xoa anh thanh cong');
+              })
+              .catch((error) => {
+                console.log('xoa anh that bai');
+                // Uh-oh, an error occurred!
+              });
+          }
         });
       }
       window.location.reload(false);
@@ -214,6 +216,7 @@ const ShowProduct = () => {
     {
       title: 'Số Lượng còn',
       dataIndex: 'quantity',
+      sorter: (a, b) => a.quantity - b.quantity,
     },
     {
       title: 'Ngày thêm',
