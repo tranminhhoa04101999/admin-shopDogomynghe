@@ -25,3 +25,11 @@
   font-size: 1.6rem;
   margin-right: 10px;
 }
+.wrap-checkboxeditaccount {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.checkboxeditaccount {
+}

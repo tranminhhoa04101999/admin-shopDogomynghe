@@ -4,13 +4,14 @@ import InputCustom from '../../base/InputCustom';
 import { useState, useEffect } from 'react';
 import ButtonCustom from '../../base/ButtonCustom';
 import { LINKCONECT_BASE } from '../../../App';
-import { notification, Select, Switch } from 'antd';
+import { notification, Select, Switch, Checkbox } from 'antd';
 import { useLocation } from 'react-router-dom';
 
 const EditAccount = () => {
   const { state } = useLocation();
   const [allRole, setAllRole] = useState([]);
-
+  const [passCheck, setPassCheck] = useState('');
+  const [checked, setChecked] = useState(false);
   const [dataAccount, setDataAccount] = useState({
     idAccount: 0,
     email: '',
@@ -28,7 +29,10 @@ const EditAccount = () => {
     // lấy account theo id để set default edit
     fetch(`${LINKCONECT_BASE}/getAccountById?id=${state.idAccount}`)
       .then((response) => response.json())
-      .then((data) => setDataAccount(data));
+      .then((data) => {
+        data.password = '';
+        setDataAccount(data);
+      });
   }, []);
 
   const openNotificationWithIcon = (props) => {
@@ -80,13 +84,6 @@ const EditAccount = () => {
         desc: 'Vui lòng nhập Email có @gmail',
       });
       return;
-    } else if (dataAccount.password === '') {
-      openNotificationWithIcon({
-        type: 'warning',
-        message: 'Lỗi để trống',
-        desc: 'Vui lòng nhập password',
-      });
-      return;
     } else if (Object.keys(dataAccount.role).length === 0) {
       openNotificationWithIcon({
         type: 'warning',
@@ -95,7 +92,37 @@ const EditAccount = () => {
       });
       return;
     }
-    console.log('dataAccount', dataAccount);
+    if (checked) {
+      if (dataAccount.password === '') {
+        openNotificationWithIcon({
+          type: 'warning',
+          message: 'Lỗi để trống',
+          desc: 'Vui lòng nhập password',
+        });
+        return;
+      } else if (dataAccount.password <= 5) {
+        openNotificationWithIcon({
+          type: 'warning',
+          message: 'Lỗi mật khẩu quá ngắn',
+          desc: 'Vui lòng nhập password dài hơn 6 ký tự',
+        });
+        return;
+      } else if (dataAccount.password.trim().indexOf(' ') >= 0) {
+        openNotificationWithIcon({
+          type: 'warning',
+          message: 'Mật khẩu lỗi',
+          desc: 'mật khẩu không được chưa khoảng trắng',
+        });
+        return;
+      } else if (dataAccount.password !== passCheck) {
+        openNotificationWithIcon({
+          type: 'warning',
+          message: 'Mật khẩu nhập lại không khớp',
+          desc: '',
+        });
+        return;
+      }
+    }
     fetch(`${LINKCONECT_BASE}/updateAccountWithAdmin`, {
       method: 'POST',
       mode: 'cors',
@@ -128,6 +155,14 @@ const EditAccount = () => {
         });
       });
   };
+  const onChangeCheckBox = (e) => {
+    setChecked(e.target.checked);
+    setDataAccount((prev) => ({ ...prev, password: '' }));
+    setPassCheck('');
+  };
+  const passCheckOnchange = (event) => {
+    setPassCheck(event.target.value);
+  };
   return (
     <div className="wrap-editaccount">
       <div className="wrap-editaccount__item">
@@ -138,12 +173,25 @@ const EditAccount = () => {
           value={dataAccount.email}
           disabled={true}
         />
-        <InputCustom
-          type="text"
-          placeholder="Mật khẩu"
-          onChange={passwordProdOnchange}
-          value={dataAccount.password}
-        />
+        <div className="wrap-checkboxeditaccount">
+          <Checkbox onChange={onChangeCheckBox}>Thay đổi mật khẩu</Checkbox>
+        </div>
+        {checked && (
+          <div>
+            <InputCustom
+              type="password"
+              placeholder="Mật khẩu Mới*"
+              onChange={passwordProdOnchange}
+              value={dataAccount.password}
+            />
+            <InputCustom
+              type="password"
+              placeholder="Nhập Lại Mật khẩu Mới*"
+              onChange={passCheckOnchange}
+              value={passCheck}
+            />
+          </div>
+        )}
         <div className="wrap-account-select">
           <span className="account-select__title">Quyền tài khoản</span>
           <Select
