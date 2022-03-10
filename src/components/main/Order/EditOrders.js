@@ -70,8 +70,9 @@ const EditOrders = () => {
     setIdStatusNew(value);
   };
 
-  const btnSelectOnClickHandler = () => {
-    fetch(
+  const btnSelectOnClickHandler = async () => {
+    setReload(true);
+    await fetch(
       `${LINKCONECT_BASE}/UpdateStatusByidStatusAndId?idStatus=${idStatusNew}&idOrders=${state.idOrder}&idEmployee=${idEmployee}`,
       {
         method: 'POST',
@@ -99,6 +100,7 @@ const EditOrders = () => {
           setReload(Math.random());
         }
       });
+    setReload(false);
   };
   return (
     <div>
@@ -145,7 +147,12 @@ const EditOrders = () => {
                     )}
 
                     {dataOrderFull.orders.status.idStatus < 5 && (
-                      <Button onClick={() => btnSelectOnClickHandler()}>Chuyển</Button>
+                      <Button
+                        loading={reload ? 1 : 0}
+                        onClick={() => btnSelectOnClickHandler()}
+                      >
+                        Chuyển
+                      </Button>
                     )}
                   </div>
                   <div className="searchOrder-Status__total">

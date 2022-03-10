@@ -14,12 +14,15 @@
 }
 .dashboard-main {
   margin: 20px 20px;
+  display: flex;
+  justify-content: space-around;
 }
 .dashboard-main__element {
   width: 48%;
   background-color: var(--white-color);
   border-radius: 8px;
   overflow: hidden;
+  height: 500px;
 }
 
 .dashboard-main__element-container-top {
@@ -62,4 +65,18 @@
   margin-top: 30px;
   font-size: 1.3rem;
   color: var(--primary-color-red);
+}
+/*  */
+
+.dashboard-main__element-thongke-top {
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.dashboard-main__element-thongke-main {
+  overflow: scroll;
+  overflow-x: hidden;
+  height: 85%;
+  scroll-behavior: smooth;
 }
