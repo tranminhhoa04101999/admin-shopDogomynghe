@@ -13,7 +13,11 @@ const HeaderMain = (props) => {
 
   const logoutHandler = () => {
     localStorage.removeItem('infoAccountLogined');
-    navigate('/authenticate');
+    window.location.reload(false);
+
+    setTimeout(() => {
+      navigate('/login', { replace: true });
+    }, 3000);
   };
 
   return (

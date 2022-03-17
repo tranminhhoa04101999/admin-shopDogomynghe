@@ -29,6 +29,7 @@ const ShowProduct = () => {
     await fetch(`${LINKCONECT_BASE}/checkProductHaveOrderItems?idProduct=${idProd}`)
       .then((response) => response.json())
       .then((data) => (checkHaveOrdersItem = data));
+    console.log('first', checkHaveOrdersItem);
     // xóa cả ảnh liên quan database
     if (checkHaveOrdersItem === 0) {
       await fetch(LINKCONECT_BASE + `/deleteImgByIdProduct?idProduct=${idProd}`, {
