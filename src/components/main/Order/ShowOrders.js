@@ -38,24 +38,31 @@ const ShowOrders = () => {
       .then((response) => response.json())
       .then((data) => {
         setDataOrders(data);
-        data.map((item) =>
-          setDataTable((prev) => [
-            ...prev,
-            {
-              key: item.idOrder,
-              idOrder: item.idOrder,
-              phone: item.phone,
-              name: item.customer.name,
-              address: item.address,
-              note: item.note,
-              total: item.total,
-              dateCreate: item.dateCreate,
-              dateModified: item.dateModified,
-              dateEnd: item.dateEnd,
-              statusName: item.status.statusName,
-            },
-          ])
-        );
+        data.map((item) => {
+          fetch(`${LINKCONECT_BASE}/orderItemsfindByIdOrders?idOrders=${item.idOrder}`)
+            .then((response) => response.json())
+            .then((data1) =>
+              setDataTable((prev) => [
+                ...prev,
+                {
+                  key: item.idOrder,
+                  idOrder: item.idOrder,
+                  phone: item.phone,
+                  name: item.customer.name,
+                  address: item.address,
+                  note: item.note,
+                  total: data1.reduce(
+                    (prev, cur) => prev + cur.priceCurrent * cur.quantity,
+                    0
+                  ),
+                  dateCreate: item.dateCreate,
+                  dateModified: item.dateModified,
+                  dateEnd: item.dateEnd,
+                  statusName: item.status.statusName,
+                },
+              ])
+            );
+        });
       });
     return () => {
       setDataTable([]);
@@ -151,10 +158,12 @@ const ShowOrders = () => {
     {
       title: 'Địa chỉ giao hàng',
       dataIndex: 'address',
+      width: '30%',
     },
     {
       title: 'Lưu ý',
       dataIndex: 'note',
+      width: '10%',
     },
     {
       title: 'Tổng tiền',

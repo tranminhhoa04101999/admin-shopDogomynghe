@@ -7,31 +7,37 @@ import { useState } from 'react';
 import { notification } from 'antd';
 
 const INITIAL_EMPLOYEE = {
-  idEmployee: 0,
+  idAccount: 0,
   name: '',
   phone: '',
   address: '',
   dateBegin: '2022-02-24T17:00:00.000+00:00',
   dateEnd: null,
   isWorking: 1,
-  account: {
-    email: '',
-    role: {
-      roleName: '',
-    },
-    isActive: 1,
-  },
+};
+const INITIAL_ACCOUNT = {
+  idAccount: 0,
+  email: '',
+  password: '',
+  role: {},
+  isActive: 1,
 };
 
 const ShowInfomation = () => {
   const dataInfo = JSON.parse(localStorage.getItem('infoAccountLogined'));
   const [dataEmployee, setDataEmployee] = useState(INITIAL_EMPLOYEE);
+  const [dataAccount, setDataAccount] = useState(INITIAL_ACCOUNT);
 
   useEffect(() => {
     // lay thong tin employeee
     fetch(`${LINKCONECT_BASE}/employeeFindByIdAccount?idAccount=${dataInfo.idAccount}`)
       .then((response) => response.json())
-      .then((data) => setDataEmployee(data[0]));
+      .then((data) => {
+        setDataEmployee(data[0]);
+        fetch(`${LINKCONECT_BASE}/getAccountById?id=${data[0].idAccount}`)
+          .then((response) => response.json())
+          .then((data1) => setDataAccount(data1));
+      });
   }, []);
   const openNotificationWithIcon = (props) => {
     notification[props.type]({
@@ -112,7 +118,7 @@ const ShowInfomation = () => {
           type="text"
           placeholder="Email"
           disabled={true}
-          value={dataEmployee.account.email}
+          value={dataAccount.email}
         />
         <InputCustom
           type="text"

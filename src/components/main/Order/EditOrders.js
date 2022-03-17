@@ -47,7 +47,7 @@ const EditOrders = () => {
       `${LINKCONECT_BASE}/employeeFindByIdAccount?idAccount=${accountLogined.idAccount}`
     )
       .then((response) => response.json())
-      .then((data) => setIdEmployee(data[0].idEmployee));
+      .then((data) => setIdEmployee(data[0].idAccount));
   }, []);
 
   useEffect(() => {
@@ -175,7 +175,14 @@ const EditOrders = () => {
                   </div>
                   <div className="searchOrder-Status__total">
                     Tổng tiền đơn hàng:{' '}
-                    <span>{formatter.format(dataOrderFull.orders.total)}</span>
+                    <span>
+                      {formatter.format(
+                        dataOrderFull.productSearchResponses.reduce(
+                          (prev, cur) => prev + cur.price * cur.quantity,
+                          0
+                        )
+                      )}
+                    </span>
                   </div>
                 </div>
               </div>

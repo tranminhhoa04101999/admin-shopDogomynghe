@@ -120,6 +120,11 @@ const AddAccount = () => {
             message: 'Email này đã tồn tại',
             desc: 'Không thể tạo mới',
           });
+        } else if (data === 0) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'tạo thất bại',
+          });
         }
       })
       .catch((error) => {

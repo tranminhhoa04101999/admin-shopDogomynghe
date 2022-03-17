@@ -72,6 +72,7 @@ function App() {
         <Route path="*" element={<Authenticate to="/authenticate" replace />} />
       </Routes>
     </Layout>
+    // ec
   );
 }
 
