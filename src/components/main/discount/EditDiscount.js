@@ -105,18 +105,37 @@ const EditDiscount = () => {
   return (
     <div className="wrap-adddiscount">
       <div className="wrap-adddiscount__item">
-        <InputCustom
-          type="text"
-          placeholder="Tên giảm giá"
-          onChange={nameDiscountOnchange}
-          value={dataDiscount.nameDiscount}
-        />
-        <InputCustom
-          type="text"
-          placeholder="Mô tả"
-          onChange={descDiscountOnchange}
-          value={dataDiscount.descDiscount}
-        />
+        <div className="addprod-input__ten">
+          <InputCustom
+            type="text"
+            placeholder="Tên giảm giá"
+            onChange={nameDiscountOnchange}
+            value={dataDiscount.nameDiscount}
+          />
+          <div
+            className={`addprod-input__ten-text ${
+              dataDiscount.nameDiscount !== '' ? 'addprod-input__ten-text--active' : ''
+            }`}
+          >
+            Tên
+          </div>
+        </div>
+        <div className="addprod-input__ten">
+          <InputCustom
+            type="text"
+            placeholder="Mô tả"
+            onChange={descDiscountOnchange}
+            value={dataDiscount.descDiscount}
+          />
+          <div
+            className={`addprod-input__ten-text ${
+              dataDiscount.descDiscount !== '' ? 'addprod-input__ten-text--active' : ''
+            }`}
+          >
+            Mô tả
+          </div>
+        </div>
+
         <Space style={{ display: 'flex', justifyContent: 'center', margin: '10px 0' }}>
           <span style={{ fontSize: '1.4rem' }}>Chọn phần trăm giảm giá: </span>
           <InputNumber

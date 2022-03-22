@@ -16,3 +16,42 @@
 .wrapp-btn-upload {
   margin: 40px 0;
 }
+.wrap-adddiscount {
+  display: flex;
+  justify-content: center;
+}
+.wrap-adddiscount__item {
+  width: 600px;
+  padding: 50px 80px;
+  border: 1px solid #999;
+  box-shadow: 0 0 10px 1px #999;
+  border-radius: 8px;
+}
+
+.adddiscount-input {
+  position: relative;
+}
+.adddiscount-input-text {
+  position: absolute;
+  top: -3px;
+  left: -78px;
+  padding: 5px 12px;
+  border-bottom: 2px solid var(--primary-color-red);
+  color: var(--primary-color-red);
+  display: none;
+  font-size: 1.4rem;
+}
+.adddiscount-input-text--active {
+  animation: hien 0.5s ease-in-out;
+  display: block;
+}
+@keyframes hien {
+  0% {
+    transform: scale(0);
+    transform-origin: right;
+  }
+  100% {
+    transform: scale(1);
+    transform-origin: right;
+  }
+}

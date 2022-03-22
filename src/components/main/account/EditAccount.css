@@ -1,3 +1,12 @@
+.wrap-editaccount {
+  display: flex;
+  justify-content: center;
+}
+.wrap-editaccount__item {
+  padding: 50px 70px;
+  border: 1px solid #999;
+  box-shadow: 0 0 10px 1px #999;
+}
 .editaccount-item__Switch {
   display: flex;
   justify-content: center;

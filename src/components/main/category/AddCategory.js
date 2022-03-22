@@ -142,18 +142,36 @@ const AddCategory = () => {
   return (
     <div className="wrap-addcategory">
       <div className="wrap-addcategory__item">
-        <InputCustom
-          type="text"
-          placeholder="Tên loại"
-          onChange={nameCateOnchange}
-          value={dataCategory.name}
-        />
-        <InputCustom
-          type="text"
-          placeholder="Mô tả"
-          onChange={descCateOnchange}
-          value={dataCategory.descCategory}
-        />
+        <div className="addprod-input__ten">
+          <InputCustom
+            type="text"
+            placeholder="Tên loại"
+            onChange={nameCateOnchange}
+            value={dataCategory.name}
+          />
+          <div
+            className={`addprod-input__ten-text ${
+              dataCategory.name !== '' ? 'addprod-input__ten-text--active' : ''
+            }`}
+          >
+            Tên
+          </div>
+        </div>
+        <div className="addprod-input__ten">
+          <InputCustom
+            type="text"
+            placeholder="Mô tả"
+            onChange={descCateOnchange}
+            value={dataCategory.descCategory}
+          />
+          <div
+            className={`addprod-input__ten-text ${
+              dataCategory.descCategory !== '' ? 'addprod-input__ten-text--active' : ''
+            }`}
+          >
+            Mô tả
+          </div>
+        </div>
 
         <div className="addcategory-item__action wrapp-btn-upload">
           <div>

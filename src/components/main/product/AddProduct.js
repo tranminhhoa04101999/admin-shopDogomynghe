@@ -166,36 +166,75 @@ const AddProduct = () => {
   return (
     <div className="wrap-addprod">
       <div className="wrap-addprod__item">
-        <InputCustom
-          type="text"
-          placeholder="Tên sản phẩm"
-          onChange={nameProdOnchange}
-          value={dataProd.nameProduct}
-        />
-        <InputCustom
-          type="number"
-          placeholder="Giá"
-          onChange={priceProdOnchange}
-          value={dataProd.price}
-        />
-        <InputCustom
-          type="text"
-          placeholder="Màu"
-          onChange={colorProdOnchange}
-          value={dataProd.color}
-        />
-        <InputCustom
-          type="text"
-          placeholder="Miêu tả"
-          onChange={descProdOnchange}
-          value={dataProd.descProduct}
-        />
-        <InputCustom
-          type="number"
-          placeholder="Số lượng"
-          onChange={quantityProdOnchange}
-          value={dataProd.quantity}
-        />
+        <div className="addprod-input__ten">
+          <InputCustom
+            type="text"
+            placeholder="Tên sản phẩm"
+            onChange={nameProdOnchange}
+            value={dataProd.nameProduct}
+          />
+          <div
+            className={`addprod-input__ten-text ${
+              dataProd.nameProduct !== '' ? 'addprod-input__ten-text--active' : ''
+            }`}
+          >
+            Tên
+          </div>
+        </div>
+        <div className="addprod-input__ten">
+          <InputCustom
+            type="number"
+            placeholder="Giá"
+            onChange={priceProdOnchange}
+            value={dataProd.price}
+          />
+          <div className={`addprod-input__ten-text addprod-input__ten-text--active`}>
+            Giá
+          </div>
+        </div>
+
+        <div className="addprod-input__ten">
+          <InputCustom
+            type="text"
+            placeholder="Màu"
+            onChange={colorProdOnchange}
+            value={dataProd.color}
+          />
+          <div
+            className={`addprod-input__ten-text ${
+              dataProd.color !== '' ? 'addprod-input__ten-text--active' : ''
+            }`}
+          >
+            Màu
+          </div>
+        </div>
+        <div className="addprod-input__ten">
+          <InputCustom
+            type="text"
+            placeholder="Miêu tả"
+            onChange={descProdOnchange}
+            value={dataProd.descProduct}
+          />
+          <div
+            className={`addprod-input__ten-text ${
+              dataProd.descProduct !== '' ? 'addprod-input__ten-text--active' : ''
+            }`}
+          >
+            Miêu tả
+          </div>
+        </div>
+        <div className="addprod-input__ten">
+          <InputCustom
+            type="number"
+            placeholder="Số lượng"
+            onChange={quantityProdOnchange}
+            value={dataProd.quantity}
+          />
+          <div className={`addprod-input__ten-text addprod-input__ten-text--active`}>
+            Số lượng
+          </div>
+        </div>
+
         <div className="wrapper-product__category">
           <span>Thể loại: </span>
           <Select

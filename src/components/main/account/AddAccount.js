@@ -139,18 +139,36 @@ const AddAccount = () => {
   return (
     <div className="wrap-addaccount">
       <div className="wrap-addaccount__item">
-        <InputCustom
-          type="email"
-          placeholder="Email"
-          onChange={emailProdOnchange}
-          value={dataAccount.email}
-        />
-        <InputCustom
-          type="text"
-          placeholder="Mật khẩu"
-          onChange={passwordProdOnchange}
-          value={dataAccount.password}
-        />
+        <div className="account-input__1">
+          <InputCustom
+            type="email"
+            placeholder="Email"
+            onChange={emailProdOnchange}
+            value={dataAccount.email}
+          />
+          <div
+            className={`account-input__1--title ${
+              dataAccount.email !== '' ? 'account-input__1--title--active' : ''
+            }`}
+          >
+            Email
+          </div>
+        </div>
+        <div className="account-input__2">
+          <InputCustom
+            type="text"
+            placeholder="Mật khẩu"
+            onChange={passwordProdOnchange}
+            value={dataAccount.password}
+          />
+          <div
+            className={`account-input__2--title ${
+              dataAccount.password !== '' ? 'account-input__2--title--active' : ''
+            }`}
+          >
+            Pass
+          </div>
+        </div>
         <div className="wrap-account-select">
           <span className="account-select__title">Quyền tài khoản</span>
           <Select style={{ width: 200 }} onChange={handleSelectChange}>

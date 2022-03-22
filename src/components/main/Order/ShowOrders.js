@@ -59,6 +59,7 @@ const ShowOrders = () => {
                   dateModified: item.dateModified,
                   dateEnd: item.dateEnd,
                   statusName: item.status.statusName,
+                  idStatus: item.status.idStatus,
                 },
               ])
             );
@@ -275,6 +276,19 @@ const ShowOrders = () => {
         },
       }}
       expandedRowKeys={expaned}
+      rowClassName={(record, index) => {
+        if (record.idStatus === 6) {
+          return 'huy';
+        } else if (record.idStatus === 5) {
+          return 'hoanthanh';
+        } else if (record.idStatus === 1) {
+          return 'doixuly';
+        } else if (record.idStatus === 2) {
+          return 'datiepnhan';
+        } else if (record.idStatus === 4) {
+          return 'danggiao';
+        }
+      }}
     />
   );
 };

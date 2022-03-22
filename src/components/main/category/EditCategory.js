@@ -171,25 +171,53 @@ const EditCategory = () => {
   return (
     <div className="wrap-editcategory">
       <div className="wrap-editcategory__item">
-        <InputCustom
-          type="text"
-          placeholder="ID"
-          value={dataCategory.idCategory}
-          disable={true}
-          onChange={() => {}}
-        />
-        <InputCustom
-          type="text"
-          placeholder="Tên loại"
-          onChange={nameCateOnchange}
-          value={dataCategory.name}
-        />
-        <InputCustom
-          type="text"
-          placeholder="Mô tả"
-          onChange={descCateOnchange}
-          value={dataCategory.descCategory}
-        />
+        <div className="addprod-input__ten">
+          <InputCustom
+            type="text"
+            placeholder="ID"
+            value={dataCategory.idCategory}
+            disable={true}
+            onChange={() => {}}
+          />
+          <div
+            className={`addprod-input__ten-text ${
+              dataCategory.idCategory !== '' ? 'addprod-input__ten-text--active' : ''
+            }`}
+          >
+            ID
+          </div>
+        </div>
+        <div className="addprod-input__ten">
+          <InputCustom
+            type="text"
+            placeholder="Tên loại"
+            onChange={nameCateOnchange}
+            value={dataCategory.name}
+          />
+          <div
+            className={`addprod-input__ten-text ${
+              dataCategory.name !== '' ? 'addprod-input__ten-text--active' : ''
+            }`}
+          >
+            Tên
+          </div>
+        </div>
+        <div className="addprod-input__ten">
+          <InputCustom
+            type="text"
+            placeholder="Mô tả"
+            onChange={descCateOnchange}
+            value={dataCategory.descCategory}
+          />
+          <div
+            className={`addprod-input__ten-text ${
+              dataCategory.descCategory !== '' ? 'addprod-input__ten-text--active' : ''
+            }`}
+          >
+            Mô tả
+          </div>
+        </div>
+
         <div className="wrap-imageDefault-edit">
           <Image
             width={100}

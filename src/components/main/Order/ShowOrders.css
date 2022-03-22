@@ -20,3 +20,18 @@
 .card-showorder__leftexpan {
   display: flex;
 }
+.huy {
+  background-color: #f8c5ca;
+}
+.hoanthanh {
+  background-color: #cdece4;
+}
+.doixuly {
+  background-color: #edd17e;
+}
+.datiepnhan {
+  background-color: rgb(183, 251, 229);
+}
+.danggiao {
+  background-color: #7a6c95;
+}

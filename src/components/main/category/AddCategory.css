@@ -16,3 +16,14 @@
 .wrapp-btn-upload {
   margin: 40px 0;
 }
+.wrap-addcategory {
+  display: flex;
+  justify-content: center;
+}
+.wrap-addcategory__item {
+  width: 600px;
+  padding: 50px 80px;
+  border: 1px solid #999;
+  box-shadow: 0 0 10px 1px #999;
+  border-radius: 8px;
+}
