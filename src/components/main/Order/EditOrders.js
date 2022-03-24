@@ -13,6 +13,7 @@ const EditOrders = () => {
   const [dataOrderFull, setDataOrderFull] = useState(null);
   const [idStatusNew, setIdStatusNew] = useState(0);
   const [dataStatus, setDataStatus] = useState([]);
+  const [dataStatusThanhToan, setDataStatusThanhToan] = useState([]);
   const [idEmployee, setIdEmployee] = useState(0);
   const [reload, setReload] = useState(0);
   const accountLogined = JSON.parse(localStorage.getItem('infoAccountLogined'));
@@ -37,11 +38,22 @@ const EditOrders = () => {
       .then((data) => {
         setDataOrderFull(data[0]);
         setIdStatusNew(data[0].orders.status.idStatus);
+        if (data[0].orders.status.idStatus === 3) {
+          fetch(`${LINKCONECT_BASE}/statusThanhToan`)
+            .then((response) => response.json())
+            .then((data) => setDataStatusThanhToan(data));
+        }
+        fetch(
+          `${LINKCONECT_BASE}/statusgetlonhon?idStatus=${data[0].orders.status.idStatus}`
+        )
+          .then((response) => response.json())
+          .then((data) => setDataStatus(data));
       });
 
-    fetch(`${LINKCONECT_BASE}/allstatus`)
-      .then((response) => response.json())
-      .then((data) => setDataStatus(data));
+    // fetch(`${LINKCONECT_BASE}/allstatus`)
+    //   .then((response) => response.json())
+    //   .then((data) => setDataStatus(data));
+
     //lấy ra id Employee
     fetch(
       `${LINKCONECT_BASE}/employeeFindByIdAccount?idAccount=${accountLogined.idAccount}`
@@ -131,19 +143,38 @@ const EditOrders = () => {
                     {dataOrderFull.orders.status.idStatus < 5 && (
                       <FontAwesomeIcon icon={faLongArrowAltRight} size="2x" />
                     )}
-
-                    {dataOrderFull.orders.status.idStatus < 5 && (
-                      <Select
-                        value={idStatusNew}
-                        style={{ width: 120, margin: '0 10px ' }}
-                        onChange={selectStatusHandler}
-                      >
-                        {dataStatus.map((itemS, index) => (
-                          <Option key={index} value={itemS.idStatus}>
-                            {itemS.statusName}
-                          </Option>
-                        ))}
-                      </Select>
+                    {dataStatusThanhToan.length === 0 ? (
+                      <div>
+                        {dataOrderFull.orders.status.idStatus < 5 && (
+                          <Select
+                            value={idStatusNew}
+                            style={{ width: 120, margin: '0 10px ' }}
+                            onChange={selectStatusHandler}
+                          >
+                            {dataStatus.map((itemS, index) => (
+                              <Option key={index} value={itemS.idStatus}>
+                                {itemS.statusName}
+                              </Option>
+                            ))}
+                          </Select>
+                        )}
+                      </div>
+                    ) : (
+                      <div>
+                        {dataOrderFull.orders.status.idStatus < 5 && (
+                          <Select
+                            value={idStatusNew}
+                            style={{ width: 120, margin: '0 10px ' }}
+                            onChange={selectStatusHandler}
+                          >
+                            {dataStatusThanhToan.map((itemS, index) => (
+                              <Option key={index} value={itemS.idStatus}>
+                                {itemS.statusName}
+                              </Option>
+                            ))}
+                          </Select>
+                        )}
+                      </div>
                     )}
 
                     {dataOrderFull.orders.status.idStatus < 5 && (
