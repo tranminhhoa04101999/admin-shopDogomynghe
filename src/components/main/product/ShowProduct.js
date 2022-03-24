@@ -3,7 +3,7 @@ import './ShowProduct.css';
 import { Table, notification, Popconfirm, Image, Card, Input, Space, Button } from 'antd';
 import { LINKCONECT_BASE, LINKIMG_BASE } from '../../../App';
 import ButtonCustom from '../../base/ButtonCustom';
-import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrashAlt, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import { SearchOutlined } from '@ant-design/icons';
@@ -14,6 +14,7 @@ import moment from 'moment';
 const ShowProduct = () => {
   const [dataProd, setDataProd] = useState([]);
   const [dataTable, setDataTable] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [expaned, setExpaned] = useState([]);
   const [imgProd, setImgProd] = useState([
     {
@@ -271,20 +272,25 @@ const ShowProduct = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     // đưa state về rỗng trước khi reload trang
     setDataProd([]);
     setDataTable([]);
     // lấy all product
     fetch(LINKCONECT_BASE + '/allproduct')
       .then((responsive) => responsive.json())
-      .then((data) => dataTableHandler(data))
-      .catch((error) =>
+      .then((data) => {
+        dataTableHandler(data);
+        setLoading(false);
+      })
+      .catch((error) => {
         openNotificationWithIcon({
           type: 'error',
           message: 'Fetch thất bại',
           desc: error,
-        })
-      );
+        });
+        setLoading(false);
+      });
     // lấy hình ảnh của product
   }, []);
 
@@ -315,49 +321,61 @@ const ShowProduct = () => {
   };
 
   return (
-    <Table
-      columns={columns}
-      dataSource={dataTable}
-      expandable={{
-        expandedRowRender: (record) => (
-          <div className="wrapper-expan__product">
-            <Card
-              title="Giảm Giá"
-              bordered={false}
-              style={{ width: 200, marginRight: '8px' }}
-              className="discount-card__product"
-            >
-              <p>Tên: {record.discount === null ? '' : record.discount.nameDiscount}</p>
-              <p>
-                Miêu Tả: {record.discount === null ? '' : record.discount.descDiscount}
-              </p>
-              <p>
-                Phần Trăm: {record.discount === null ? '' : record.discount.percent * 100}{' '}
-                %
-              </p>
-            </Card>
-            <div style={{ marginBottom: '4px' }}>
-              <ButtonCustom
-                style={{ fontSize: '1.5rem' }}
-                onClick={() => loadImgHandler({ idProd: record.key })}
-              >
-                Hiển thị ảnh
-              </ButtonCustom>
-            </div>
-            <div>{imgProd.length > 0 ? ShowAnh : <div></div>}</div>
-          </div>
-        ),
-        rowExpandable: (record) => record.name !== 'Not Expandable',
-        onExpand: (expanded, record) => {
-          if (expanded) {
-            setExpaned([record.key]);
-          } else {
-            setExpaned([]);
-          }
-        },
-      }}
-      expandedRowKeys={expaned}
-    />
+    <div>
+      {!loading ? (
+        <Table
+          columns={columns}
+          dataSource={dataTable}
+          expandable={{
+            expandedRowRender: (record) => (
+              <div className="wrapper-expan__product">
+                <Card
+                  title="Giảm Giá"
+                  bordered={false}
+                  style={{ width: 200, marginRight: '8px' }}
+                  className="discount-card__product"
+                >
+                  <p>
+                    Tên: {record.discount === null ? '' : record.discount.nameDiscount}
+                  </p>
+                  <p>
+                    Miêu Tả:{' '}
+                    {record.discount === null ? '' : record.discount.descDiscount}
+                  </p>
+                  <p>
+                    Phần Trăm:{' '}
+                    {record.discount === null ? '' : record.discount.percent * 100} %
+                  </p>
+                </Card>
+                <div style={{ marginBottom: '4px' }}>
+                  <ButtonCustom
+                    style={{ fontSize: '1.5rem' }}
+                    onClick={() => loadImgHandler({ idProd: record.key })}
+                  >
+                    Hiển thị ảnh
+                  </ButtonCustom>
+                </div>
+                <div>{imgProd.length > 0 ? ShowAnh : <div></div>}</div>
+              </div>
+            ),
+            rowExpandable: (record) => record.name !== 'Not Expandable',
+            onExpand: (expanded, record) => {
+              if (expanded) {
+                setExpaned([record.key]);
+              } else {
+                setExpaned([]);
+              }
+            },
+          }}
+          expandedRowKeys={expaned}
+        />
+      ) : (
+        <div className="container-loading">
+          <FontAwesomeIcon icon={faSpinner} size="1x" className="loading" />
+          <div>Loading....</div>
+        </div>
+      )}
+    </div>
   );
 };
 

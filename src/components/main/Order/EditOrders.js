@@ -4,7 +4,15 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { LINKCONECT_BASE, LINKIMG_BASE } from '../../../App';
 import './EditOrders.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleNotch, faLongArrowAltRight } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCircleNotch,
+  faLongArrowAltRight,
+  faCarSide,
+  faBox,
+  faCheckSquare,
+  faBan,
+  faFileInvoiceDollar,
+} from '@fortawesome/free-solid-svg-icons';
 import { Select, Button, notification } from 'antd';
 import moment from 'moment';
 
@@ -117,143 +125,190 @@ const EditOrders = () => {
   return (
     <div>
       {dataOrderFull !== null && (
-        <div className="grid wide" style={{ overflow: 'hidden' }}>
-          <div className="row">
-            <div className="col l-1"></div>
-            <div className="col l-7 container-searchOrder-col-top">
-              <div className="row wapper-searchorder-main-left">
-                <div className="col l-4 searchorder-main-left">
-                  <p className="searchorder-main-left__title">Địa Chỉ Nhận Hàng</p>
-                  <p className="searchorder-main-left__name">
-                    Tên : {dataOrderFull.orders.customer.name}
-                  </p>
-                  <p className="searchorder-main-left_phone">
-                    SĐT : {dataOrderFull.orders.phone}
-                  </p>
-                  <p className="searchorder-main-left_address">
-                    Địa chỉ : {dataOrderFull.orders.address}
-                  </p>
-                </div>
-                <div className="col l-8 ">
-                  <div className="searchOrder-Status">
-                    <FontAwesomeIcon icon={faCircleNotch} size="2x" />
-                    <div className="searchOrder-Status__title">
-                      {dataOrderFull.orders.status.statusName}
-                    </div>
-                    {dataOrderFull.orders.status.idStatus < 5 && (
-                      <FontAwesomeIcon icon={faLongArrowAltRight} size="2x" />
-                    )}
-                    {dataStatusThanhToan.length === 0 ? (
-                      <div>
-                        {dataOrderFull.orders.status.idStatus < 5 && (
-                          <Select
-                            value={idStatusNew}
-                            style={{ width: 120, margin: '0 10px ' }}
-                            onChange={selectStatusHandler}
-                          >
-                            {dataStatus.map((itemS, index) => (
-                              <Option key={index} value={itemS.idStatus}>
-                                {itemS.statusName}
-                              </Option>
-                            ))}
-                          </Select>
-                        )}
-                      </div>
-                    ) : (
-                      <div>
-                        {dataOrderFull.orders.status.idStatus < 5 && (
-                          <Select
-                            value={idStatusNew}
-                            style={{ width: 120, margin: '0 10px ' }}
-                            onChange={selectStatusHandler}
-                          >
-                            {dataStatusThanhToan.map((itemS, index) => (
-                              <Option key={index} value={itemS.idStatus}>
-                                {itemS.statusName}
-                              </Option>
-                            ))}
-                          </Select>
-                        )}
-                      </div>
-                    )}
-
-                    {dataOrderFull.orders.status.idStatus < 5 && (
-                      <Button
-                        loading={reload ? 1 : 0}
-                        onClick={() => btnSelectOnClickHandler()}
-                      >
-                        Chuyển
-                      </Button>
-                    )}
+        <div className="grid wide">
+          <div className="container-searchOrder">
+            <div className="row">
+              <div className="col l-12 container-searchOrder-col-top">
+                <div className="row wapper-searchorder-main-left">
+                  <div className="col l-4 searchorder-main-left">
+                    <p className="searchorder-main-left__title">Địa Chỉ Nhận Hàng</p>
+                    <p className="searchorder-main-left__name">
+                      Tên : {dataOrderFull.orders.customer.name}
+                    </p>
+                    <p className="searchorder-main-left_phone">
+                      SĐT : {dataOrderFull.orders.phone}
+                    </p>
+                    <p className="searchorder-main-left_address">
+                      Địa chỉ : {dataOrderFull.orders.address}
+                    </p>
                   </div>
-                  <div className="searchOrder-Status__total">
-                    {dataOrderFull.orders.employee !== null ? (
-                      <div>Nhân viên chỉnh sửa:</div>
-                    ) : (
-                      ''
-                    )}
-                    <span>
-                      {dataOrderFull.orders.employee !== null
-                        ? dataOrderFull.orders.employee.name
-                        : ''}
-                    </span>
-                    ngày
-                    <span>
-                      {dataOrderFull.orders.dateEnd === null
-                        ? moment(dataOrderFull.orders.dateModified).format('DD/MM/YYYY')
-                        : moment(dataOrderFull.orders.dateEnd).format('DD/MM/YYYY')}
-                    </span>
-                  </div>
-                  <div className="searchOrder-Status__total">
-                    Tổng tiền đơn hàng:{' '}
-                    <span>
-                      {formatter.format(
-                        dataOrderFull.productSearchResponses.reduce(
-                          (prev, cur) => prev + cur.price * cur.quantity,
-                          0
-                        )
+                  <div className="col l-8 ">
+                    <div className="searchOrder-Status">
+                      {
+                        <div>
+                          {dataOrderFull.orders.status.idStatus === 1 && (
+                            <FontAwesomeIcon
+                              icon={faCircleNotch}
+                              size="2x"
+                              className="searchOrder-Status__icon--dangxuly"
+                            />
+                          )}
+                          {dataOrderFull.orders.status.idStatus === 2 && (
+                            <FontAwesomeIcon
+                              icon={faBox}
+                              size="2x"
+                              className="searchOrder-Status__icon--datiepnhan"
+                            />
+                          )}
+                          {dataOrderFull.orders.status.idStatus === 3 && (
+                            <FontAwesomeIcon
+                              icon={faFileInvoiceDollar}
+                              size="2x"
+                              className="searchOrder-Status__icon--dathanhtoan"
+                            />
+                          )}
+                          {dataOrderFull.orders.status.idStatus === 4 && (
+                            <FontAwesomeIcon
+                              icon={faCarSide}
+                              size="2x"
+                              className="searchOrder-Status__icon--danggiao"
+                            />
+                          )}
+                          {dataOrderFull.orders.status.idStatus === 5 && (
+                            <FontAwesomeIcon
+                              icon={faCheckSquare}
+                              size="2x"
+                              className="searchOrder-Status__icon--dagiao"
+                            />
+                          )}
+                          {dataOrderFull.orders.status.idStatus === 6 && (
+                            <FontAwesomeIcon
+                              icon={faBan}
+                              size="2x"
+                              className="searchOrder-Status__icon--huy"
+                            />
+                          )}
+                        </div>
+                      }
+                      <div className="searchOrder-Status__title">
+                        {dataOrderFull.orders.status.statusName}
+                      </div>
+                      {dataOrderFull.orders.status.idStatus < 5 && (
+                        <FontAwesomeIcon icon={faLongArrowAltRight} size="2x" />
                       )}
-                    </span>
+                      {dataStatusThanhToan.length === 0 ? (
+                        <div>
+                          {dataOrderFull.orders.status.idStatus < 5 && (
+                            <Select
+                              value={idStatusNew}
+                              style={{ width: 120, margin: '0 10px ' }}
+                              onChange={selectStatusHandler}
+                            >
+                              {dataStatus.map((itemS, index) => (
+                                <Option key={index} value={itemS.idStatus}>
+                                  {itemS.statusName}
+                                </Option>
+                              ))}
+                            </Select>
+                          )}
+                        </div>
+                      ) : (
+                        <div>
+                          {dataOrderFull.orders.status.idStatus < 5 && (
+                            <Select
+                              value={idStatusNew}
+                              style={{ width: 120, margin: '0 10px ' }}
+                              onChange={selectStatusHandler}
+                            >
+                              {dataStatusThanhToan.map((itemS, index) => (
+                                <Option key={index} value={itemS.idStatus}>
+                                  {itemS.statusName}
+                                </Option>
+                              ))}
+                            </Select>
+                          )}
+                        </div>
+                      )}
+
+                      {dataOrderFull.orders.status.idStatus < 5 && (
+                        <Button
+                          loading={reload ? 1 : 0}
+                          onClick={() => btnSelectOnClickHandler()}
+                        >
+                          Chuyển
+                        </Button>
+                      )}
+                    </div>
+                    <div className="searchOrder-Status__total">
+                      {dataOrderFull.orders.employee !== null ? (
+                        <div>Nhân viên chỉnh sửa:</div>
+                      ) : (
+                        ''
+                      )}
+                      <span>
+                        {dataOrderFull.orders.employee !== null
+                          ? dataOrderFull.orders.employee.name
+                          : ''}
+                      </span>
+                      ngày
+                      <span>
+                        {dataOrderFull.orders.dateEnd === null
+                          ? moment(dataOrderFull.orders.dateModified).format('DD/MM/YYYY')
+                          : moment(dataOrderFull.orders.dateEnd).format('DD/MM/YYYY')}
+                      </span>
+                    </div>
+                    <div className="searchOrder-Status__total">
+                      Tổng tiền đơn hàng:{' '}
+                      <span>
+                        {formatter.format(
+                          dataOrderFull.productSearchResponses.reduce(
+                            (prev, cur) => prev + cur.price * cur.quantity,
+                            0
+                          )
+                        )}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className="row wapper-searchOrder">
-            <div className="col l-1"></div>
-            <div className="col l-7 container-searchOrder-col-bottom">
-              <table className="cart-table">
-                <thead></thead>
-                <tbody className="searchOrderTable-body">
-                  {dataOrderFull.productSearchResponses.map((itemProd, indexProd) => (
-                    <tr key={indexProd} className="cart-table-body-tr">
-                      <td className="cart-table-img">
-                        <div className="cart-table-img__wrap-img">
-                          <img
-                            src={`${LINKIMG_BASE}${itemProd.imgURL}.jpg?alt=media`}
-                            alt=""
-                            className="cart-table-img__img"
-                          />
-                        </div>
-                        <div className="cart-table-img__wrap-variant">
-                          <p className="cart-table-img__link">{itemProd.nameProduct}</p>
-                          <p className="cart-table-img__variant">x{itemProd.quantity}</p>
-                        </div>
-                      </td>
-                      <td className="cart-table__wrap-price">
-                        <div className="cart-table__wrap-price-old">
-                          {formatter.format(itemProd.price)}
-                        </div>
-                        <div className="cart-table__wrap-price-total">
-                          Tổng tiền:{' '}
-                          {formatter.format(itemProd.price * itemProd.quantity)}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="row wapper-searchOrder">
+              <div className="col l-12 container-searchOrder-col-bottom">
+                <table className="cart-table">
+                  <thead></thead>
+                  <tbody className="searchOrderTable-body">
+                    {dataOrderFull.productSearchResponses.map((itemProd, indexProd) => (
+                      <tr key={indexProd} className="cart-table-body-tr">
+                        <td className="cart-table-img">
+                          <div className="cart-table-img__wrap-img">
+                            <img
+                              src={`${LINKIMG_BASE}${itemProd.imgURL}.jpg?alt=media`}
+                              alt=""
+                              className="cart-table-img__img"
+                            />
+                          </div>
+                          <div className="cart-table-img__wrap-variant">
+                            <p className="cart-table-img__link">{itemProd.nameProduct}</p>
+                            <p className="cart-table-img__variant">
+                              x{itemProd.quantity}
+                            </p>
+                          </div>
+                        </td>
+                        <td className="cart-table__wrap-price">
+                          <div className="cart-table__wrap-price-old">
+                            {formatter.format(itemProd.price)}
+                          </div>
+                          <div className="cart-table__wrap-price-total">
+                            Tổng tiền:{' '}
+                            {formatter.format(itemProd.price * itemProd.quantity)}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
