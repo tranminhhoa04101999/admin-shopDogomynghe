@@ -3,7 +3,7 @@ import './ShowOrders.css';
 import ButtonCustom from '../../base/ButtonCustom';
 import { Table, notification, Popconfirm, Image, Card, Input, Space, Button } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faFileExcel, faFileInvoice } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { SearchOutlined } from '@ant-design/icons';
@@ -20,6 +20,7 @@ const ShowOrders = () => {
   const [dataTable, setDataTable] = useState([]);
   const [dataOrders, setDataOrders] = useState([]);
   const [expaned, setExpaned] = useState([]);
+  const [xuatFile, setXuatFile] = useState(false);
 
   const [dataOrderExpan, setDataOrderExpan] = useState(null);
   const openNotificationWithIcon = (props) => {
@@ -73,6 +74,21 @@ const ShowOrders = () => {
   const EditActionHandler = (props) => {
     navigate('/orders/editorders', { state: { idOrder: props.idOrder } });
   };
+  const xuathoadon = async (props) => {
+    setXuatFile(true);
+    const { idOrder } = props;
+    await fetch(`${LINKCONECT_BASE}/xuatfilepdf?idOrder=${idOrder}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data === 1) {
+          console.log('tao thanh cong');
+        }
+        if (data === 0) {
+          console.log('tao that bai');
+        }
+      });
+    setXuatFile(false);
+  };
 
   const actionBtn = (props) => {
     return (
@@ -83,6 +99,14 @@ const ShowOrders = () => {
             onConfirm={() => EditActionHandler({ idOrder: props.idOrder })}
           >
             <FontAwesomeIcon icon={faEdit} />
+          </Popconfirm>
+        </ButtonCustom>
+        <ButtonCustom style={{ marginRight: '10px', padding: 0 }}>
+          <Popconfirm
+            title="xuất hóa đơn"
+            onConfirm={() => xuathoadon({ idOrder: props.idOrder })}
+          >
+            <FontAwesomeIcon icon={faFileInvoice} />
           </Popconfirm>
         </ButtonCustom>
       </div>
@@ -200,8 +224,8 @@ const ShowOrders = () => {
           value: 'Đã tiếp nhận',
         },
         {
-          text: 'Chờ thanh toán',
-          value: 'Chờ thanh toán',
+          text: 'Đã thanh toán',
+          value: 'Đã thanh toán',
         },
         {
           text: 'Đang giao',
@@ -224,72 +248,74 @@ const ShowOrders = () => {
       title: 'Thao tác',
       dataIndex: 'action',
       render: (_, record) => actionBtn({ idOrder: record.idOrder }),
-      width: '5%',
+      width: '8%',
     },
   ];
 
   return (
-    <Table
-      columns={columns}
-      dataSource={dataTable}
-      expandable={{
-        expandedRowRender: (record) => {
-          if (dataOrderExpan !== null)
-            return (
-              <div>
-                <Card>
-                  {dataOrderExpan.productSearchResponses.map((item, index) => (
-                    <Card.Grid key={index} style={gridStyle}>
-                      <div className="wapper-card-showorder">
-                        <div className="card-showorder__leftexpan">
-                          <Image
-                            width={50}
-                            height={50}
-                            src={`${LINKIMG_BASE}${item.imgURL}.jpg?alt=media`}
-                          />
-                          <div className="card-showorder_name">
-                            <p>{item.nameProduct}</p>
-                            <p>x{item.quantity}</p>
+    <div>
+      <Table
+        columns={columns}
+        dataSource={dataTable}
+        expandable={{
+          expandedRowRender: (record) => {
+            if (dataOrderExpan !== null)
+              return (
+                <div>
+                  <Card>
+                    {dataOrderExpan.productSearchResponses.map((item, index) => (
+                      <Card.Grid key={index} style={gridStyle}>
+                        <div className="wapper-card-showorder">
+                          <div className="card-showorder__leftexpan">
+                            <Image
+                              width={50}
+                              height={50}
+                              src={`${LINKIMG_BASE}${item.imgURL}.jpg?alt=media`}
+                            />
+                            <div className="card-showorder_name">
+                              <p>{item.nameProduct}</p>
+                              <p>x{item.quantity}</p>
+                            </div>
+                          </div>
+                          <div className="card-showorder_price">
+                            <div className="card-showorder_price-old">
+                              {formatter.format(item.price)}
+                            </div>
                           </div>
                         </div>
-                        <div className="card-showorder_price">
-                          <div className="card-showorder_price-old">
-                            {formatter.format(item.price)}
-                          </div>
-                        </div>
-                      </div>
-                    </Card.Grid>
-                  ))}
-                </Card>
-              </div>
-            );
-        },
-        rowExpandable: (record) => record.name !== 'Not Expandable',
+                      </Card.Grid>
+                    ))}
+                  </Card>
+                </div>
+              );
+          },
+          rowExpandable: (record) => record.name !== 'Not Expandable',
 
-        onExpand: (expanded, record) => {
-          if (expanded) {
-            expanHandler({ idOrder: record.idOrder });
-            setExpaned([record.idOrder]);
-          } else {
-            setExpaned([]);
+          onExpand: (expanded, record) => {
+            if (expanded) {
+              expanHandler({ idOrder: record.idOrder });
+              setExpaned([record.idOrder]);
+            } else {
+              setExpaned([]);
+            }
+          },
+        }}
+        expandedRowKeys={expaned}
+        rowClassName={(record, index) => {
+          if (record.idStatus === 6) {
+            return 'huy';
+          } else if (record.idStatus === 5) {
+            return 'hoanthanh';
+          } else if (record.idStatus === 1) {
+            return 'doixuly';
+          } else if (record.idStatus === 2) {
+            return 'datiepnhan';
+          } else if (record.idStatus === 4) {
+            return 'danggiao';
           }
-        },
-      }}
-      expandedRowKeys={expaned}
-      rowClassName={(record, index) => {
-        if (record.idStatus === 6) {
-          return 'huy';
-        } else if (record.idStatus === 5) {
-          return 'hoanthanh';
-        } else if (record.idStatus === 1) {
-          return 'doixuly';
-        } else if (record.idStatus === 2) {
-          return 'datiepnhan';
-        } else if (record.idStatus === 4) {
-          return 'danggiao';
-        }
-      }}
-    />
+        }}
+      />
+    </div>
   );
 };
 

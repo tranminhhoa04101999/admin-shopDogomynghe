@@ -13,6 +13,7 @@ const InputCustom = (props) => {
         onChange={props.onChange}
         min={0}
         disabled={props.disabled}
+        step={props.step}
       />
     </div>
   );

@@ -183,6 +183,7 @@ const AddProduct = () => {
         </div>
         <div className="addprod-input__ten">
           <InputCustom
+            step={5000}
             type="number"
             placeholder="Giá"
             onChange={priceProdOnchange}
