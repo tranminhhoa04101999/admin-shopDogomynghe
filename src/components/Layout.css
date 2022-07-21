@@ -6,7 +6,7 @@
   width: var(--layout-nav-left);
   height: calc(100vh - var(--header-height));
   float: left;
-  text-align: center;
+  text-align: left;
   padding: 50px 0;
   box-shadow: 2px 2px 2px var(--border-color);
   /* box-shadow: -1px 15px 30px -12px black; */
@@ -25,6 +25,7 @@
   opacity: 0.9;
   height: 36px;
   border-radius: 8px;
+  padding: 0 30px;
 }
 .main-nav-item--active {
   background-color: var(--primary-color-red);

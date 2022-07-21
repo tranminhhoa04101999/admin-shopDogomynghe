@@ -299,9 +299,21 @@ const EditOrders = () => {
                           <div className="cart-table__wrap-price-old">
                             {formatter.format(itemProd.price)}
                           </div>
+                          <div className="cart-table__wrap-discountCurrent">
+                            {itemProd.discountCurrent === 0 ? (
+                              ''
+                            ) : (
+                              <div>
+                                Đã áp dụng{' '}
+                                <span className="cart-table__wrap-discountCurrent-percent">
+                                  {itemProd.discountCurrent}%
+                                </span>{' '}
+                                giảm giá.
+                              </div>
+                            )}
+                          </div>
                           <div className="cart-table__wrap-price-total">
-                            Tổng tiền:{' '}
-                            {formatter.format(itemProd.price * itemProd.quantity)}
+                            Tổng: {formatter.format(itemProd.price * itemProd.quantity)}
                           </div>
                         </td>
                       </tr>

@@ -1,5 +1,5 @@
 .container-searchOrder {
-  width: 920px;
+  width: 950px;
   margin-left: 200px;
   border: 1px solid #999;
   padding: 10px;
@@ -44,7 +44,7 @@
 }
 /* cart table */
 .cart-table {
-  width: 900px;
+  width: 100%;
 }
 .cart-table-tr-header {
   border-bottom: 2px solid #dbd8cb;
@@ -60,12 +60,6 @@
 }
 .cart-table-th__price {
   text-align: right;
-}
-.cart-table-th__quantity {
-}
-.cart-table-th__total {
-}
-.cart-table-th__remove {
 }
 
 .cart-table-img {
@@ -104,7 +98,16 @@
 }
 .cart-table__wrap-price-old {
   font-size: 1.4rem;
-  margin-bottom: 8px;
+}
+.cart-table__wrap-discountCurrent {
+  margin-bottom: 24px;
+}
+.cart-table__wrap-discountCurrent span {
+  font-size: 1.2rem;
+}
+.cart-table__wrap-discountCurrent-percent {
+  color: var(--btn-color);
+  font-weight: 600;
 }
 .cart-table__wrap-price-total {
   font-size: 1.6rem;

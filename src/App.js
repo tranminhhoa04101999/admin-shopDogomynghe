@@ -27,6 +27,9 @@ import Orders from './components/main/Order/Orders';
 import ShowOrders from './components/main/Order/ShowOrders';
 import EditOrders from './components/main/Order/EditOrders';
 import AddToProduct from './components/main/discount/AddToProduct';
+import ImportProduct from './components/main/warehouse/ImportProduct';
+import ShowImport from './components/main/warehouse/ShowImport';
+import AddImport from './components/main/warehouse/AddImport';
 
 export const LINKCONECT_BASE = 'http://localhost:8080';
 export const LINKIMG_BASE =
@@ -68,6 +71,10 @@ function App() {
         <Route path="/orders" element={<Orders />}>
           <Route path="showorders" element={<ShowOrders />} />
           <Route path="editorders" element={<EditOrders />} />
+        </Route>
+        <Route path="/importproduct" element={<ImportProduct />}>
+          <Route path="showimport" element={<ShowImport />} />
+          <Route path="addimport" element={<AddImport />} />
         </Route>
         <Route path="*" element={<Authenticate to="/authenticate" replace />} />
       </Routes>

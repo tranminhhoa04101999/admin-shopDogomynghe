@@ -7,6 +7,7 @@ import {
   faShoppingBag,
   faPercent,
   faUser,
+  faWarehouse,
 } from '@fortawesome/free-solid-svg-icons';
 import { faProductHunt } from '@fortawesome/free-brands-svg-icons';
 import { NavLink } from 'react-router-dom';
@@ -82,6 +83,15 @@ const Layout = (props) => {
             >
               <FontAwesomeIcon icon={faShoppingBag} className="main-nav__icon" />
               Orders
+            </NavLink>
+            <NavLink
+              to="/importproduct"
+              className={({ isActive }) =>
+                isActive ? 'main-nav-item main-nav-item--active' : 'main-nav-item'
+              }
+            >
+              <FontAwesomeIcon icon={faWarehouse} className="main-nav__icon" />
+              Warehouse
             </NavLink>
           </div>
         )}
