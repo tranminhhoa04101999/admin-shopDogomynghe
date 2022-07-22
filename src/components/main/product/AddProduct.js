@@ -152,15 +152,6 @@ const AddProduct = () => {
     setIdProdMax(props.idMax);
     setActiveUpload(1);
     navigate('/products/showproduct');
-    // setDataProd({
-    //   nameProduct: '',
-    //   price: 0,
-    //   color: '',
-    //   descProduct: '',
-    //   quantity: 0,
-    //   addDate: new Date(),
-    //   isActive: 1,
-    // });
   };
 
   return (
@@ -228,8 +219,9 @@ const AddProduct = () => {
           <InputCustom
             type="number"
             placeholder="Số lượng"
-            onChange={quantityProdOnchange}
+            // onChange={quantityProdOnchange}
             value={dataProd.quantity}
+            disabled={true}
           />
           <div className={`addprod-input__ten-text addprod-input__ten-text--active`}>
             Số lượng

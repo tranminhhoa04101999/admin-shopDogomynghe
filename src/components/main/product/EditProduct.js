@@ -356,8 +356,9 @@ const EditProduct = () => {
           <InputCustom
             type="number"
             placeholder="Số lượng"
-            onChange={quantityProdOnchange}
+            // onChange={quantityProdOnchange}
             value={dataProd.quantity}
+            disabled={true}
           />
           <div
             className={`addprod-input__ten-text ${

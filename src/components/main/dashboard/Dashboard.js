@@ -8,13 +8,21 @@ import { LINKCONECT_BASE, LINKIMG_BASE } from '../../../App';
 import { Card, Image, Select, Input, Button, notification } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLongArrowAltRight } from '@fortawesome/free-solid-svg-icons';
-
 import moment from 'moment';
+
+const gridStyle = {
+  width: '100%',
+  textAlign: 'center',
+  padding: '10px 20px',
+};
+
 const Dashboard = (props) => {
   const navigate = useNavigate();
   const data = JSON.parse(localStorage.getItem('infoAccountLogined'));
   const [chartOrder, setChartOrder] = useState([]);
   const [thongkeProduct, setThongkeProduct] = useState(null);
+  const [dataIncomeTotal, setDataIncomeTotal] = useState([]);
+  const [dataAllStatusOrder, setDataAllStatusOrder] = useState({});
   const [thongkeChoose, setThongkeChoose] = useState({
     choose: 1,
     begin: '',
@@ -131,38 +139,6 @@ const Dashboard = (props) => {
     },
   });
 
-  const [optionThongke, setOptionThongke] = useState({
-    responsive: true,
-
-    scales: {
-      y: {
-        beginAtZero: true,
-        ticks: {
-          stepSize: 1000,
-        },
-      },
-    },
-    plugins: {
-      legend: {
-        display: false,
-      },
-      title: {
-        display: true,
-        text: '',
-      },
-    },
-  });
-
-  const [dataThongke, setDataThongke] = useState({
-    labels: [],
-    datasets: [
-      {
-        label: 'Thu nhập',
-        data: [],
-        backgroundColor: ['rgb(54, 162, 235)'],
-      },
-    ],
-  });
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'VND',
@@ -320,88 +296,20 @@ const Dashboard = (props) => {
     let begin = thongkeChoose.begin.replaceAll('-', '/');
     let end = thongkeChoose.end.replaceAll('-', '/');
     if (thongkeChoose.choose === 1) {
-      fetch(`${LINKCONECT_BASE}/getDataThongkeTotal?begin=${begin}&end=${end}`)
+      fetch(
+        `${LINKCONECT_BASE}/incomeFindBydateBeginAnddateEnd?begin=${begin}&end=${end}`
+      )
         .then((response) => response.json())
         .then((data) => {
-          let labels = [];
-          let dataChart = [];
-          let datasets = [];
-          let count = 0;
-          for (let i = 0; i < data.length; i++) {
-            const element = data[i];
-            labels.push(moment(element.date).format('DD/MM'));
-            dataChart.push(element.total);
-            count = count + element.total;
-          }
-          datasets.push({
-            label: 'Thu nhập',
-            data: dataChart,
-            backgroundColor: ['rgb(54, 162, 235)'],
-          });
-
-          setDataThongke({ labels: labels, datasets: datasets });
-          setOptionThongke((prev) => ({
-            ...prev,
-            plugins: {
-              ...prev.plugins,
-              title: {
-                ...prev.plugins.title,
-                text: `Tổng thu nhập: ${formatter.format(count)}.`,
-              },
-            },
-            scales: {
-              ...prev.scales,
-              y: {
-                beginAtZero: true,
-                ticks: {
-                  stepSize: count / 10,
-                },
-              },
-            },
-          }));
+          setDataIncomeTotal(data);
+        });
+      fetch(`${LINKCONECT_BASE}/getAllStatusOrder?begin=${begin}&end=${end}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setDataAllStatusOrder(data);
         });
     }
     if (thongkeChoose.choose === 2) {
-      fetch(`${LINKCONECT_BASE}/getDataThongkeOrder?begin=${begin}&end=${end}`)
-        .then((response) => response.json())
-        .then((data) => {
-          let labels = [];
-          let dataChart = [];
-          let datasets = [];
-          let count = 0;
-          for (let i = 0; i < data.length; i++) {
-            const element = data[i];
-            labels.push(moment(element.date).format('DD/MM'));
-            dataChart.push(element.quantity);
-            count = count + element.quantity;
-          }
-          datasets.push({
-            label: 'Số đơn',
-            data: dataChart,
-            backgroundColor: ['rgb(54, 162, 235)'],
-          });
-
-          setDataThongke({ labels: labels, datasets: datasets });
-          setOptionThongke((prev) => ({
-            ...prev,
-            plugins: {
-              ...prev.plugins,
-              title: {
-                ...prev.plugins.title,
-                text: `Tổng số đơn: ${count}.`,
-              },
-            },
-            scales: {
-              ...prev.scales,
-              y: {
-                beginAtZero: true,
-                ticks: {
-                  stepSize: count / 10,
-                },
-              },
-            },
-          }));
-        });
     }
     if (thongkeChoose.choose === 3) {
       fetch(`${LINKCONECT_BASE}/getTopSaleWithDate?begin=${begin}&end=${end}`)
@@ -444,7 +352,7 @@ const Dashboard = (props) => {
               onChange={ThongkeOnchange}
             >
               <Option value={1}>Thu nhập</Option>
-              <Option value={2}>Đơn hàng</Option>
+              {/* <Option value={2}>Đơn hàng</Option> */}
               <Option value={3}>Sản phẩm bán ra</Option>
             </Select>
             <Input
@@ -462,11 +370,116 @@ const Dashboard = (props) => {
           </div>
           <div className="dashboard-main__element-thongke-main">
             {thongkeProduct === null ? (
-              <Line
-                options={optionThongke}
-                data={dataThongke}
-                style={{ backgroundColor: 'white' }}
-              />
+              <div>
+                <Card>
+                  <Card.Grid
+                    style={{
+                      ...gridStyle,
+                      display: 'flex',
+                      justifyContent: 'space-around',
+                    }}
+                  >
+                    <span className="element-thongke-main__total">
+                      Tổng đơn: <div>{dataAllStatusOrder.tongDon}</div>
+                    </span>
+                    <span className="element-thongke-main__total">
+                      Đã giao: <div>{dataAllStatusOrder.daGiao}</div>
+                    </span>
+                    <span className="element-thongke-main__total">
+                      Đã hủy: <div>{dataAllStatusOrder.daHuy}</div>
+                    </span>
+                  </Card.Grid>
+                  <Card.Grid
+                    style={{
+                      ...gridStyle,
+                      display: 'flex',
+                      justifyContent: 'space-around',
+                    }}
+                  >
+                    <span className="element-thongke-main__total">
+                      Tổng nhập:{' '}
+                      <div>
+                        {formatter.format(
+                          dataIncomeTotal.reduce(
+                            (prev, cur) =>
+                              (prev += cur.averageImportPrice * cur.quantitySale),
+                            0
+                          )
+                        )}
+                      </div>
+                    </span>
+                    <span className="element-thongke-main__total">
+                      Tổng bán:{' '}
+                      <div>
+                        {formatter.format(
+                          dataIncomeTotal.reduce(
+                            (prev, cur) => (prev += cur.totalPriceSale),
+                            0
+                          )
+                        )}
+                      </div>
+                    </span>
+                    <span className="element-thongke-main__total">
+                      Tổng lợi nhuận:{' '}
+                      <div>
+                        {formatter.format(
+                          dataIncomeTotal.reduce(
+                            (prev, cur) => (prev += cur.totalPriceSale),
+                            0
+                          ) -
+                            dataIncomeTotal.reduce(
+                              (prev, cur) =>
+                                (prev += cur.averageImportPrice * cur.quantitySale),
+                              0
+                            )
+                        )}
+                      </div>
+                    </span>
+                  </Card.Grid>
+                </Card>
+                <Card>
+                  <Card.Grid style={gridStyle}>
+                    <div className="element-thongke-main__wapper">
+                      <span className="element-thongke-main__id">ID</span>
+                      <span className="element-thongke-main__nameprod">Sản phẩm</span>
+                      <span className="element-thongke-main__priceaverage">
+                        Giá Nhập(Trung Bình)
+                      </span>
+                      <span className="element-thongke-main__quantity">Số lượng bán</span>
+                      <span className="element-thongke-main__totalPriceSale">
+                        Tổng bán
+                      </span>
+                    </div>
+                  </Card.Grid>
+                  {dataIncomeTotal.length === 0 ? (
+                    <div> Chưa chọn thống kê</div>
+                  ) : (
+                    <div>
+                      {dataIncomeTotal.map((item, index) => {
+                        return (
+                          <Card.Grid key={index} style={gridStyle}>
+                            <div className="element-thongke-main__wapper">
+                              <span className="element-thongke-main__id">{item.id}</span>
+                              <span className="element-thongke-main__nameprod">
+                                {item.name}
+                              </span>
+                              <span className="element-thongke-main__priceaverage">
+                                {formatter.format(item.averageImportPrice)}
+                              </span>
+                              <span className="element-thongke-main__quantity">
+                                {item.quantitySale}
+                              </span>
+                              <span className="element-thongke-main__totalPriceSale">
+                                {formatter.format(item.totalPriceSale)}
+                              </span>
+                            </div>
+                          </Card.Grid>
+                        );
+                      })}
+                    </div>
+                  )}
+                </Card>
+              </div>
             ) : (
               <div>
                 {thongkeProduct.map((item, index) => (

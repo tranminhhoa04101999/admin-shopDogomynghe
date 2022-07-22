@@ -82,3 +82,32 @@
   height: 85%;
   scroll-behavior: smooth;
 }
+.element-thongke-main__total {
+  font-size: 1.6rem;
+}
+.element-thongke-main__total div {
+  display: inline-block;
+  font-size: 1.6rem;
+  color: var(--btn-color);
+}
+.element-thongke-main__wapper {
+  display: flex;
+}
+.element-thongke-main__wapper span {
+  font-size: 1.2rem;
+}
+.element-thongke-main__id {
+  width: 5%;
+}
+.element-thongke-main__nameprod {
+  width: 50%;
+}
+.element-thongke-main__priceaverage {
+  width: 15%;
+}
+.element-thongke-main__quantity {
+  width: 15%;
+}
+.element-thongke-main__totalPriceSale {
+  width: 15%;
+}

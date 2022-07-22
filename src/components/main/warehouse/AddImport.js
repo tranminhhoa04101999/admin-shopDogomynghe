@@ -152,7 +152,6 @@ const AddImport = () => {
         return 0;
       }
     });
-    console.log('validate', validate);
     let checkvalidate = -1;
     checkvalidate = validate.findIndex((item) => item === 1);
     if (checkvalidate < 0) {

@@ -306,7 +306,7 @@ const EditOrders = () => {
                               <div>
                                 Đã áp dụng{' '}
                                 <span className="cart-table__wrap-discountCurrent-percent">
-                                  {itemProd.discountCurrent}%
+                                  {itemProd.discountCurrent * 100}%
                                 </span>{' '}
                                 giảm giá.
                               </div>

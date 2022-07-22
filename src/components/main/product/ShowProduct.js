@@ -148,6 +148,10 @@ const ShowProduct = () => {
       </div>
     );
   };
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'VND',
+  });
   const columns = [
     {
       title: 'Tên',
@@ -205,6 +209,7 @@ const ShowProduct = () => {
     {
       title: 'Giá',
       dataIndex: 'price',
+      render: (_, record) => formatter.format(record.price),
     },
     {
       title: 'Màu',

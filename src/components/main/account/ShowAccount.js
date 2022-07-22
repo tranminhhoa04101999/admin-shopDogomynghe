@@ -189,55 +189,11 @@ const ShowAccount = () => {
             <FontAwesomeIcon icon={faEdit} />
           </Popconfirm>
         </ButtonCustom>
-        {/* <ButtonCustom style={{ padding: 0 }}>
-          <Popconfirm
-            title="Bạn muốn xóa?"
-            onConfirm={() => removeAccountHandler({ idAccount: props.idAccount })}
-          >
-            <FontAwesomeIcon icon={faTrashAlt} />
-          </Popconfirm>
-        </ButtonCustom> */}
       </div>
     );
   };
 
-  return (
-    <Table
-      columns={columns}
-      dataSource={dataTable}
-      expandable={{
-        expandedRowRender: (record) => (
-          <div className="wrapper-expan__product">
-            {/* <Card
-              title="Giảm Giá"
-              bordered={false}
-              style={{ width: 200, marginRight: '8px' }}
-              className="discount-card__product"
-            >
-              <p>Tên: {record.discount === null ? '' : record.discount.nameDiscount}</p>
-              <p>
-                Miêu Tả: {record.discount === null ? '' : record.discount.descDiscount}
-              </p>
-              <p>
-                Phần Trăm: {record.discount === null ? '' : record.discount.percent * 100}{' '}
-                %
-              </p>
-            </Card> */}
-            {/* <div style={{ marginBottom: '4px' }}>
-              <ButtonCustom
-                style={{ fontSize: '1.5rem' }}
-                onClick={() => loadImgHandler({ idProd: record.key })}
-              >
-                Hiển thị ảnh
-              </ButtonCustom>
-            </div>
-            <div>{imgProd.length > 0 ? ShowAnh : <div></div>}</div> */}
-          </div>
-        ),
-        rowExpandable: (record) => record.name !== 'Not Expandable',
-      }}
-    />
-  );
+  return <Table columns={columns} dataSource={dataTable} />;
 };
 
 export default ShowAccount;
