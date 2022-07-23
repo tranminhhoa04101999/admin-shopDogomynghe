@@ -30,6 +30,7 @@ import AddToProduct from './components/main/discount/AddToProduct';
 import ImportProduct from './components/main/warehouse/ImportProduct';
 import ShowImport from './components/main/warehouse/ShowImport';
 import AddImport from './components/main/warehouse/AddImport';
+import EditImport from './components/main/warehouse/EditImport';
 
 export const LINKCONECT_BASE = 'http://localhost:8080';
 export const LINKIMG_BASE =
@@ -75,6 +76,7 @@ function App() {
         <Route path="/importproduct" element={<ImportProduct />}>
           <Route path="showimport" element={<ShowImport />} />
           <Route path="addimport" element={<AddImport />} />
+          <Route path="editimport" element={<EditImport />} />
         </Route>
         <Route path="*" element={<Authenticate to="/authenticate" replace />} />
       </Routes>

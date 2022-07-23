@@ -318,6 +318,51 @@ const Dashboard = (props) => {
     }
   };
 
+  const btnExportExcelOnClick = () => {
+    if (thongkeChoose.begin === '') {
+      openNotificationWithIcon({
+        type: 'warning',
+        message: 'Lỗi để trống',
+        desc: 'Vui lòng chọn ngày bắt đầu thống kê',
+      });
+      return;
+    } else if (thongkeChoose.end === '') {
+      openNotificationWithIcon({
+        type: 'warning',
+        message: 'Lỗi để trống',
+        desc: 'Vui lòng chọn ngày kết thúc thống kê',
+      });
+      return;
+    }
+    let dateBegin = new Date(thongkeChoose.begin);
+    let dateEnd = new Date(thongkeChoose.end);
+    if (dateBegin > dateEnd) {
+      openNotificationWithIcon({
+        type: 'warning',
+        message: 'Không được chọn ngày bắt lớn hơn ngày kết thúc',
+      });
+      return;
+    }
+    let begin = thongkeChoose.begin.replaceAll('-', '/');
+    let end = thongkeChoose.end.replaceAll('-', '/');
+    if (thongkeChoose.choose === 1) {
+      fetch(
+        `${LINKCONECT_BASE}/statisticalTotalExportFileExcel?begin=${begin}&end=${end}`,
+        { responseType: 'blob' }
+      )
+        .then((response) => {
+          response.blob().then((blob) => {
+            let url = window.URL.createObjectURL(blob);
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = 'thongke.xlsx';
+            a.click();
+          });
+        })
+        .then((data) => {})
+        .then((err) => console.log('errr', err));
+    }
+  };
   return (
     <div className="container-dashboard">
       <div className="dashboard-top">
@@ -367,6 +412,12 @@ const Dashboard = (props) => {
               onChange={inputDateEndOnchange}
             />
             <Button onClick={() => btnThongkeOnClick()}>Thống kê</Button>
+            <Button
+              style={{ marginLeft: '10px' }}
+              onClick={() => btnExportExcelOnClick()}
+            >
+              Xuất Excel
+            </Button>
           </div>
           <div className="dashboard-main__element-thongke-main">
             {thongkeProduct === null ? (

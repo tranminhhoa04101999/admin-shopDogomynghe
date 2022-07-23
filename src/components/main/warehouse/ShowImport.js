@@ -81,10 +81,33 @@ const ShowImport = () => {
         }
       });
   };
+  const editImportHandler = async (props) => {
+    let listId = [];
+    let nameEmployee = '';
+    await fetch(`${LINKCONECT_BASE}/detailsfindbyimportprod?idImportProduct=${props.id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        data.map((item) => {
+          listId.push(item.product.idProduct);
+        });
+        nameEmployee = data[0].importProduct.employee.name;
+      });
+    navigate('/importproduct/editimport', {
+      state: { id: props.id, listIdProd: listId, nameEmployee: nameEmployee },
+    });
+  };
 
   const actionBtn = (props) => {
     return (
       <div className="wraper-action">
+        <ButtonCustom style={{ marginRight: '10px', padding: 0 }}>
+          <Popconfirm
+            title="Chỉnh sửa"
+            onConfirm={() => editImportHandler({ id: props.idImportProduct })}
+          >
+            <FontAwesomeIcon icon={faEdit} />
+          </Popconfirm>
+        </ButtonCustom>
         <ButtonCustom style={{ marginRight: '10px', padding: 0 }}>
           <Popconfirm
             title="xuất hóa đơn"

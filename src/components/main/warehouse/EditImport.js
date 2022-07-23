@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import './EditImport.css';
 import { Card, Select, Tag, Button, notification, Image, Popconfirm } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
-import './AddImport.css';
 import { LINKCONECT_BASE, LINKIMG_BASE } from '../../../App';
 import InputCustom from '../../base/InputCustom';
 import ButtonCustom from '../../base/ButtonCustom';
@@ -11,52 +11,83 @@ const IMPORT_INITIAL = {
   sourceName: '',
   listProd: [],
 };
-
 const style_btnLuu = {
   backgroundColor: 'var(--btn-color)',
   color: 'white',
   width: '80px',
   marginTop: '40px',
 };
-const AddImport = () => {
+
+const EditImport = () => {
   const [options, setOptions] = useState([]);
   const [listIdProduct, setListIdProduct] = useState([]);
   const [dataImport, setDataImport] = useState(IMPORT_INITIAL);
-  const [idEmployee, setIdEmployee] = useState(0);
   const [nameEmployee, setNameEmployee] = useState('');
-  const accountLogined = JSON.parse(localStorage.getItem('infoAccountLogined'));
+  const { state } = useLocation();
+  const navigate = useNavigate();
+  const [dataImportProd, setDataImportProd] = useState({});
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
-    fetch(`${LINKCONECT_BASE}/allproduct`)
-      .then((response) => response.json())
-      .then((data) => {
-        data.map((item) =>
-          setOptions((prev) => [
-            ...prev,
-            {
-              value: item.idProduct,
-              label: 'ID: ' + item.idProduct + ' ' + item.nameProduct,
-            },
-          ])
-        );
-      });
-    //lấy ra id Employee
-    fetch(
-      `${LINKCONECT_BASE}/employeeFindByIdAccount?idAccount=${accountLogined.idAccount}`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setIdEmployee(data[0].idAccount);
-        setNameEmployee(data[0].name);
-      });
+    if (state === null) {
+      navigate('/importproduct');
+    }
+    const fetchData = async () => {
+      await fetch(`${LINKCONECT_BASE}/allproduct`)
+        .then((response) => response.json())
+        .then((data) => {
+          data.map((item) =>
+            setOptions((prev) => [
+              ...prev,
+              {
+                value: item.idProduct,
+                label: 'ID: ' + item.idProduct + ' ' + item.nameProduct,
+              },
+            ])
+          );
+        });
+      await fetch(`${LINKCONECT_BASE}/importproductfindbyid?id=${state.id}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setDataImportProd(data);
+          setDataImport((prev) => ({ ...prev, sourceName: data.sourceName }));
+          fetch(
+            `${LINKCONECT_BASE}/detailsfindbyimportprod?idImportProduct=${data.idImportProduct}`
+          )
+            .then((response) => response.json())
+            .then((data1) => {
+              data1.map((item) => {
+                console.log('first1', item);
+                setDataImport((prev) => ({
+                  ...prev,
+                  listProd: [
+                    ...prev.listProd,
+                    {
+                      id: item.product.idProduct,
+                      name: item.product.nameProduct,
+                      quantity: item.quantity,
+                      price: item.price,
+                    },
+                  ],
+                }));
+              });
+            });
+        })
+        .then((err) => {});
+    };
+    fetchData();
+    return () => {
+      setDataImportProd({});
+      setDataImport(IMPORT_INITIAL);
+    };
   }, []);
+
   function tagRender(props) {
     const { label, value, closable, onClose } = props;
     const onPreventMouseDown = (event) => {
       event.preventDefault();
       event.stopPropagation();
     };
-
     return (
       <Tag
         color="green"
@@ -107,6 +138,11 @@ const AddImport = () => {
       setDataImport((prev) => ({ ...prev, listProd: listProdNew }));
     }, 100);
   };
+
+  const onChangeSourceName = (event) => {
+    setDataImport((prev) => ({ ...prev, sourceName: event.target.value }));
+  };
+
   const onChangeQuantityHandler = (event, param1) => {
     let listProdOld = dataImport.listProd;
     let index = listProdOld.findIndex((item) => item.id === param1);
@@ -123,6 +159,7 @@ const AddImport = () => {
     let listProdNew = listProdOld.fill(temp, index, index);
     setDataImport((prev) => ({ ...prev, listProd: listProdNew }));
   };
+
   const btnNhapOnClick = () => {
     if (dataImport.sourceName.trim() === '') {
       openNotificationWithIcon({
@@ -155,21 +192,24 @@ const AddImport = () => {
     let checkvalidate = -1;
     checkvalidate = validate.findIndex((item) => item === 1);
     if (checkvalidate < 0) {
-      fetch(`${LINKCONECT_BASE}/addImport?idEmployee=${idEmployee}`, {
-        method: 'POST',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
-        headers: {
-          'Content-Type': 'application/json',
-          Accepts: '*/*',
+      fetch(
+        `${LINKCONECT_BASE}/editImport?idImportProduct=${dataImportProd.idImportProduct}`,
+        {
+          method: 'POST',
+          mode: 'cors',
+          cache: 'no-cache',
+          credentials: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json',
+            Accepts: '*/*',
 
-          // 'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
-        body: JSON.stringify(dataImport),
-      })
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          redirect: 'follow',
+          referrerPolicy: 'no-referrer',
+          body: JSON.stringify(dataImport),
+        }
+      )
         .then((response) => response.json())
         .then((data) => {
           openNotificationWithIcon({
@@ -180,6 +220,7 @@ const AddImport = () => {
           if (data.idResult === 1) {
             setDataImport(IMPORT_INITIAL);
           }
+          navigate('/importproduct/showimport');
         })
         .catch((error) => {
           openNotificationWithIcon({
@@ -190,14 +231,12 @@ const AddImport = () => {
         });
     }
   };
-  const onChangeSourceName = (event) => {
-    setDataImport((prev) => ({ ...prev, sourceName: event.target.value }));
-  };
   return (
     <div>
       <div className="container-select-addimport">
         <span className="select-addimport_title">Chọn sản phẩm nhập hàng: </span>
         <Select
+          defaultValue={state.listIdProd}
           mode="multiple"
           showArrow
           tagRender={tagRender}
@@ -217,6 +256,11 @@ const AddImport = () => {
             </div>
           </div>
           <div className="row">
+            <div className="col l-12 addimport_col-top">
+              <span>Mã PN: {dataImportProd.idImportProduct}</span>
+            </div>
+          </div>
+          <div className="row">
             <div className="col l-4 addimport_col-center">
               <span>Tên nguồn nhập: </span>
               <InputCustom
@@ -227,7 +271,12 @@ const AddImport = () => {
               />
             </div>
             <div className="col l-4 addimport_col-center">
-              <span>Ngày Nhập: {moment(new Date()).format('DD/MM/YYYY')}</span>
+              <span>
+                Ngày Nhập: {moment(dataImportProd.dateCreate).format('DD/MM/YYYY')}
+              </span>
+            </div>
+            <div className="col l-4 addimport_col-center">
+              <span>Ngày Sửa: {moment(new Date()).format('DD/MM/YYYY')}</span>
             </div>
           </div>
           <div className="col l-12 addimport_col-prod">
@@ -291,7 +340,7 @@ const AddImport = () => {
             )}
             <div className="row wrapper-importProd_btn">
               <div className="col l-4 importProd_btn-nguoilap">
-                <span>Người lập phiếu: {nameEmployee}</span>
+                <span>Người lập phiếu: {state.nameEmployee}</span>
               </div>
               {dataImport.listProd.length > 0 && (
                 <div
@@ -314,4 +363,4 @@ const AddImport = () => {
   );
 };
 
-export default AddImport;
+export default EditImport;
